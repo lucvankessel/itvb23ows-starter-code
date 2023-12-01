@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:80"
+    # disable this volume to build the image with all the code in it.
+    # also be sure to modify the Dockerfile if you change this to make sure the code is copied for building
+    volumes:
+      - ./:/var/www/html/
+  mysql:
+    image: "mysql"
+    restart: "unless-stopped"
+    environment:
+      MYSQL_DATABASE: 'hive'
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
