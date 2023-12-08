@@ -11,6 +11,7 @@ function set_state($state) {
     $_SESSION['player'] = $c;
 }
 
-return new mysqli('mysql', 'root', '', 'hive');
+$handler = new PDO('mysql:host=mysql;dbname=hive', 'root', '');
 
+return $handler
 ?>
