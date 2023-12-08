@@ -2,7 +2,7 @@
 
 session_start();
 
-include_once 'util.php';
+include_once __DIR__.'/../utils/util.php';
 
 $from = $_POST['from'];
 $to = $_POST['to'];
@@ -55,15 +55,15 @@ else {
         if (isset($board[$to])) array_push($board[$to], $tile);
         else $board[$to] = [$tile];
         $_SESSION['player'] = 1 - $_SESSION['player'];
-        $db = include 'database.php';
+        $db = include __DIR__.'/../db/database.php';
         $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
         $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state());
         $stmt->execute();
-        $_SESSION['last_move'] = $db->insert_id;
+        $_SESSION['last_move'] = $db->lastInsertId();
     }
     $_SESSION['board'] = $board;
 }
 
-header('Location: index.php');
+header('Location: ../../index.php');
 
 ?>
