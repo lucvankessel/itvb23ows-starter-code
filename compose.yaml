@@ -19,3 +19,15 @@ services:
       - '3306'
     volumes:
       - "./data:/var/lib/mysql"
+  jenkins:
+    build: 
+      dockerfile: Dockerfile.jenkins
+    privileged: true
+    user: root
+    ports:
+      - 6060:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - ./jenkins-data:/var/jenkins_home
+      - /Users/lucvkessel/.docker/run/docker.sock:/var/run/docker.sock
