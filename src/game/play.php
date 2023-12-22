@@ -2,7 +2,8 @@
 
 session_start();
 
-include_once __DIR__.'/../utils/util.php';
+include_once '../utils/util.php';
+include_once '../db/database.php';
 
 $piece = $_POST['piece'];
 $to = $_POST['to'];
@@ -25,14 +26,20 @@ elseif (array_sum($hand) <= 8 && $hand['Q']) {
     $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
     $_SESSION['hand'][$player][$piece]--;
     $_SESSION['player'] = 1 - $_SESSION['player'];
-    $db = include __DIR__.'/../db/database.php';
-    echo '<pre>'; print_r($_SESSION); echo '</pre>';
+
+    $db = database::getInstance()->get_connection();
     $state = get_state();
-    $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
-    $stmt->execute(['issis', $_SESSION['game_id'], $piece, $to, $_SESSION['last_move'], $state]);
-    $_SESSION['last_move'] = $db->lastInsertId();
+    try
+    {    
+        $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
+        $stmt->execute([$_SESSION['game_id'], $piece, $to, $_SESSION['last_move'] ?? null, $state]);
+        $_SESSION['last_move'] = $db->lastInsertId();
+    }
+    catch (PDOException $e)
+    {
+        $_SESSION['error'] = 'Some error from PDO';
+    }
 }
 
-header('Location: ../../index.php');
-
-?>
+header('Location: /');
+exit(0);

@@ -11,7 +11,25 @@ function set_state($state) {
     $_SESSION['player'] = $c;
 }
 
-$handler = new PDO('mysql:host=mysql;dbname=hive', 'root', '');
+class database {
+    private static $instance = null;
+    private static $db = null;
 
-return $handler
+    public static function getInstance()
+    {
+      if(!self::$instance)
+      {
+        self::$instance = new database();
+      }
+     
+      return self::$instance;
+    }
+
+    public static function get_connection() {
+        if(self::$db == null) {
+            self::$db = new PDO('mysql:host=127.0.0.1;dbname=hive', 'root', '');
+        }
+        return self::$db;
+    }
+}
 ?>

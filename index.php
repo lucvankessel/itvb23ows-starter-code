@@ -1,12 +1,17 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+
     session_start();
 
-    include_once __DIR__.'/src/utils/util.php';
+    include_once 'src/utils/util.php';
+    include_once 'src/db/database.php';
 
     if (!isset($_SESSION['board'])) {
-        header('Location: /src/game/restart.php');
+        header('Location: src/game/restart.php');
         exit(0);
     }
+
     $board = $_SESSION['board'];
     $player = $_SESSION['player'];
     $hand = $_SESSION['hand'];
@@ -141,7 +146,7 @@
             </select>
             <input type="submit" value="Play">
         </form>
-        <form method="post" action="src/game/move.php">
+        <form method="POST" action="src/game/move.php">
             <select name="from">
                 <?php
                     foreach (array_keys($board) as $pos) {
@@ -158,25 +163,25 @@
             </select>
             <input type="submit" value="Move">
         </form>
-        <form method="post" action="src/game/pass.php">
+        <form method="POST" action="src/game/pass.php">
             <input type="submit" value="Pass">
         </form>
-        <form method="post" action="src/game/restart.php">
+        <form method="POST" action="src/game/restart.php">
             <input type="submit" value="Restart">
         </form>
         <strong><?php if (isset($_SESSION['error'])) echo($_SESSION['error']); unset($_SESSION['error']); ?></strong>
         <ol>
             <?php
-                $db = include __DIR__.'/src/db/database.php';
+                $db = database::getInstance()->get_connection();
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ?');
                 $stmt->execute([$_SESSION['game_id']]);
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                while ($row = $result) {
-                    echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
+                $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+                foreach($result as $key=>$row) {
+                    echo '<li>'.$row['type'].' '.$row['move_from'].' '.$row['move_to'].'</li>';
                 }
             ?>
         </ol>
-        <form method="post" action="undo.php">
+        <form method="POST" action="src/game/undo.php">
             <input type="submit" value="Undo">
         </form>
     </body>
