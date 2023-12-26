@@ -2,8 +2,9 @@
 
 session_start();
 
-include_once '../utils/util.php';
-include_once '../db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/utils/util.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
 
 $piece = $_POST['piece'];
 $to = $_POST['to'];

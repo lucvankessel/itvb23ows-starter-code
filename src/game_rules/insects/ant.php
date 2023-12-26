@@ -1,7 +1,7 @@
 <?php
 
 class Ant implements Insect {
-    public function moves(array $board, array $coordinates): array {
-        return [];
+    public function moves(array $board, string $coordinate): array {
+        return find_contour($board, [$coordinate]);
     }
 }

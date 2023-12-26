@@ -1,7 +1,7 @@
 <?php
 
 class Spider implements Insect {
-    public function moves(array $board, array $coordinates): array {
-        return [];
+    public function moves(array $board, string $coordinate): array {
+        return trace_contour($board, $coordinate, 3);
     }
 }

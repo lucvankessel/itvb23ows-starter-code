@@ -6,24 +6,30 @@
 
     include_once 'src/utils/util.php';
     include_once 'src/db/database.php';
+    include_once 'src/game_rules/insect.php';
+    include_once 'src/game_rules/insects/ant.php';
+    include_once 'src/game_rules/insects/beetle.php';
+    include_once 'src/game_rules/insects/grasshopper.php';
+    include_once 'src/game_rules/insects/queen.php';
+    include_once 'src/game_rules/insects/spider.php';
 
     if (!isset($_SESSION['board'])) {
         header('Location: src/game/restart.php');
         exit(0);
     }
 
+    $insect_classes = [];
+    $insect_classes['Q'] = new Queen;
+    $insect_classes['B'] = new Beetle;
+    $insect_classes['S'] = new Spider;
+    $insect_classes['A'] = new Ant;
+    $insect_classes['G'] = new Grasshopper;
+
     $board = $_SESSION['board'];
     $player = $_SESSION['player'];
     $hand = $_SESSION['hand'];
 
-    $to = [];
-    foreach ($GLOBALS['OFFSETS'] as $pq) {
-        foreach (array_keys($board) as $pos) {
-            $pq2 = explode(',', $pos);
-            $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
-        }
-    }
-    $to = array_unique($to);
+    $to = find_contour($board);
     if (!count($to)) $to[] = '0,0';
 ?>
 <!DOCTYPE html>
@@ -150,6 +156,7 @@
             <select name="from">
                 <?php
                     foreach (array_keys($board) as $pos) {
+                        // This also includes positions from the other player i think.
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>
@@ -157,6 +164,7 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
+                        // Create these based on the above selected value.
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>

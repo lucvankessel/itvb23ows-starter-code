@@ -2,7 +2,8 @@
 
 session_start();
 
-include_once '../db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+
 $db = database::getInstance()->get_connection();
 $stmt = $db->prepare('SELECT * FROM moves WHERE id = ?');
 $stmt->execute([$_SESSION['last_move']]);

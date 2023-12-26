@@ -2,8 +2,8 @@
 
 session_start();
 
-include_once '../utils/util.php';
-include_once '../db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/utils/util.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
 
 $from = $_POST['from'];
 $to = $_POST['to'];
