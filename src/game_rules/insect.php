@@ -1,6 +1,11 @@
 <?php
 
 include_once($_SERVER['DOCUMENT_ROOT']."/src/utils/util.php");
+include_once 'insects/ant.php';
+include_once 'insects/beetle.php';
+include_once 'insects/grasshopper.php';
+include_once 'insects/queen.php';
+include_once 'insects/spider.php';
 
 interface Insect
 {
@@ -62,4 +67,19 @@ function trace_contour($state, $coordinate, $steps = 1) {
     }
 
     return array_unique($return);
+}
+
+function get_moves($board, $coordinates): array {
+    $insect_classes = [];
+    $insect_classes['Q'] = new Queen;
+    $insect_classes['B'] = new Beetle;
+    $insect_classes['S'] = new Spider;
+    $insect_classes['A'] = new Ant;
+    $insect_classes['G'] = new Grasshopper;
+
+    $piece = $board[$coordinates][0][1];
+    $class = $insect_classes[$piece];
+    $moves = $class->moves($board, $coordinates);
+
+    return $moves;
 }

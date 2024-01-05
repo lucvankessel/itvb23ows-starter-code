@@ -4,6 +4,7 @@ session_start();
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/utils/util.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
 
 $from = $_POST['from'];
 $to = $_POST['to'];
@@ -58,9 +59,9 @@ else {
         $db = database::getInstance()->get_connection();
         $_SESSION['player'] = 1 - $_SESSION['player'];
         $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
-        $stmt->bindParam($_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state());
-        $stmt->execute();
+        $stmt->execute(array($_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state()));
         $_SESSION['last_move'] = $db->lastInsertId();
+        unset($board[$from]);
     }
     $_SESSION['board'] = $board;
 }

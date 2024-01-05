@@ -1,5 +1,7 @@
 <?php
 
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
+
 $GLOBALS['OFFSETS'] = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
 
 function isNeighbour($a, $b) {
@@ -33,15 +35,29 @@ function len($tile) {
 function slide($board, $from, $to) {
     if (!hasNeighBour($to, $board)) return false;
     if (!isNeighbour($from, $to)) return false;
-    $b = explode(',', $to);
-    $common = [];
-    foreach ($GLOBALS['OFFSETS'] as $pq) {
-        $p = $b[0] + $pq[0];
-        $q = $b[1] + $pq[1];
-        if (isNeighbour($from, $p.",".$q)) $common[] = $p.",".$q;
+    // $b = explode(',', $to);
+    // $common = [];
+    // foreach ($GLOBALS['OFFSETS'] as $pq) {
+    //     $p = $b[0] + $pq[0];
+    //     $q = $b[1] + $pq[1];
+    //     if (isNeighbour($from, $p.",".$q)) $common[] = $p.",".$q;
+    // }
+
+    if (in_array($to, trace_contour($board, $from, 1))) {
+        return true;
     }
-    if (!$board[$common[0]] && !$board[$common[1]] && !$board[$from] && !$board[$to]) return false;
-    return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
+    return false;
+    // if ( 
+    //     !isset($board[$common[0]]) &&
+    //     !isset($board[$common[1]]) &&
+    //     !isset($board[$from]) &&
+    //     !isset($board[$to])
+    // ) {
+    //     return false;
+    // }
+
+    // // if (!$board[$common[0]] && !$board[$common[1]] && !$board[$from] && !$board[$to]) return false;
+    // return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
 }
 
 ?>

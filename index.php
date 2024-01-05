@@ -83,6 +83,9 @@
                 padding: 0;
             }
         </style>
+
+        <!-- Jquery ftw -->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
     <body>
         <div class="board">
@@ -153,21 +156,19 @@
             <input type="submit" value="Play">
         </form>
         <form method="POST" action="src/game/move.php">
-            <select name="from">
+            <select name="from" id="select-move-from">
                 <?php
                     foreach (array_keys($board) as $pos) {
+                        if ($board[$pos][0][0] != $player) {
+                            continue;
+                        }
                         // This also includes positions from the other player i think.
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>
             </select>
-            <select name="to">
-                <?php
-                    foreach ($to as $pos) {
-                        // Create these based on the above selected value.
-                        echo "<option value=\"$pos\">$pos</option>";
-                    }
-                ?>
+            <select name="to" id="select-move-to">
+                    <!-- is filled according to what is selected in the from select above. -->
             </select>
             <input type="submit" value="Move">
         </form>
@@ -193,5 +194,50 @@
             <input type="submit" value="Undo">
         </form>
     </body>
+
+    <script>
+    $(document).ready(function() {
+
+        function updateOptions(selectedValue) {
+            $.ajax({
+                url: "http://localhost:8000/src/game/get_options.php",
+                type: "POST",
+                data: { from: selectedValue },
+                dataType: "json",
+                success: function(options) {
+                    updateSelectOptions(options);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching options:", error);
+                }
+            });
+        }
+
+        function updateSelectOptions(options) {
+            var selectTo = $("#select-move-to");
+
+            selectTo.empty();
+
+            $.each(options, function(index, value) {
+                selectTo.append($("<option></option>")
+                    .attr("value", value)
+                    .text(value));
+            });
+        }
+
+        // Attach a change event handler to the first select
+        $("#select-move-from").change(function() {
+            var selectedValue = $(this).val();
+            // Make an AJAX request when the value changes
+            updateOptions(selectedValue);
+        });
+
+        // Make an initial AJAX request when the page is loaded
+        var initialSelectedValue = $("#select-move-from").val();
+        updateOptions(initialSelectedValue);
+
+    });
+</script>
+
 </html>
 
