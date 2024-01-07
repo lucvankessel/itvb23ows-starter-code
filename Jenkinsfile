@@ -21,6 +21,18 @@ pipeline {
             }
         }
 
+        stage('test') {
+            agent {
+                docker {
+                    image 'composer:lts'
+                }
+            }
+            steps {
+                sh 'composer install'
+                sh 'vendor/bin/phpunit src/.'
+            }
+        }
+
         stage('build') {
             agent { 
                 docker { 
