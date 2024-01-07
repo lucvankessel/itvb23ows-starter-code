@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/src/utils/util.php");
+require_once dirname(__FILE__) . "/../utils/util.php";
 include_once 'insects/ant.php';
 include_once 'insects/beetle.php';
 include_once 'insects/grasshopper.php';

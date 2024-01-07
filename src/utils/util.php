@@ -1,6 +1,6 @@
 <?php
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
+include_once __DIR__ . '/../game_rules/insect.php';
 
 $GLOBALS['OFFSETS'] = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
 
