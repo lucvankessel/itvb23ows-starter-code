@@ -7,23 +7,11 @@
     include_once 'src/utils/util.php';
     include_once 'src/db/database.php';
     include_once 'src/game_rules/insect.php';
-    include_once 'src/game_rules/insects/ant.php';
-    include_once 'src/game_rules/insects/beetle.php';
-    include_once 'src/game_rules/insects/grasshopper.php';
-    include_once 'src/game_rules/insects/queen.php';
-    include_once 'src/game_rules/insects/spider.php';
 
     if (!isset($_SESSION['board'])) {
         header('Location: src/game/restart.php');
         exit(0);
     }
-
-    $insect_classes = [];
-    $insect_classes['Q'] = new Queen;
-    $insect_classes['B'] = new Beetle;
-    $insect_classes['S'] = new Spider;
-    $insect_classes['A'] = new Ant;
-    $insect_classes['G'] = new Grasshopper;
 
     $board = $_SESSION['board'];
     $player = $_SESSION['player'];
@@ -141,8 +129,13 @@
         <form method="post" action="src/game/play.php">
             <select name="piece">
                 <?php
-                    foreach ($hand[$player] as $tile => $ct) {
-                        echo "<option value=\"$tile\">$tile</option>";
+                    // foreach ($hand[$player] as $tile => $ct) {
+                    //     echo "<option value=\"$tile\">$tile</option>";
+                    // }
+                    foreach( $hand[$player] as $title => $ct ) {
+                        for ($i = 0; $i < $ct; $i++) {
+                            echo "<option value=\"$title\">$title</option>";
+                        }
                     }
                 ?>
             </select>
