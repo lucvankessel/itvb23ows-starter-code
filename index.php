@@ -126,7 +126,7 @@
         <div class="turn">
             Turn: <?php if ($player == 0) echo "White"; else echo "Black"; ?>
         </div>
-        
+
         <form method="post" action="src/game/play.php">
             <select name="piece">
                 <?php

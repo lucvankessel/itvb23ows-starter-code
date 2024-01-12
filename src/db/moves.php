@@ -2,7 +2,7 @@
 
 // function for inserting a move into the database
 function insert_move($db, array $options) {
-    if (len($options != 6)) {
+    if (count($options) != 6) {
         throw new Exception("Not enough arugments to add a valid move");
     }
 
