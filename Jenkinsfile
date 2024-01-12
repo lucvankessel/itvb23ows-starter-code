@@ -34,13 +34,16 @@ pipeline {
         }
 
         stage('build') {
-            agent { 
-                docker { 
-                    image 'php:8.3.0-alpine3.19' 
-                    } 
-                }
             steps {
-                sh 'php --version'
+                script {
+                    def dockerBuildExitCode = sh(script: 'docker build -t my-php-app .', returnStatus: true)
+                    
+                    if (dockerBuildExitCode == 0) {
+                        echo 'Docker build successful!'
+                    } else {
+                        error 'Docker build failed!'
+                    }
+                }
             }
         }
     }

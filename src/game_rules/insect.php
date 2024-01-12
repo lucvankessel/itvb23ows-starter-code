@@ -32,10 +32,15 @@ function find_contour($board, $exclude = []):array {
     $to = [];
     foreach ($GLOBALS['OFFSETS'] as $pq) {
         foreach (array_keys($board) as $pos) {
+            
             if (!in_array($pos, $exclude)) {
                 $pq2 = explode(',', $pos);
                 if (hasNeighBour($pos, $board)) {
-                    $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                    $new_pos = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                    if( isset($board[$new_pos]) ) {
+                        continue;
+                    }
+                    $to[] = $new_pos; 
                 }
             }
         }

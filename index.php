@@ -126,12 +126,10 @@
         <div class="turn">
             Turn: <?php if ($player == 0) echo "White"; else echo "Black"; ?>
         </div>
+        
         <form method="post" action="src/game/play.php">
             <select name="piece">
                 <?php
-                    // foreach ($hand[$player] as $tile => $ct) {
-                    //     echo "<option value=\"$tile\">$tile</option>";
-                    // }
                     foreach( $hand[$player] as $title => $ct ) {
                         for ($i = 0; $i < $ct; $i++) {
                             echo "<option value=\"$title\">$title</option>";
@@ -148,6 +146,7 @@
             </select>
             <input type="submit" value="Play">
         </form>
+
         <form method="POST" action="src/game/move.php">
             <select name="from" id="select-move-from">
                 <?php
@@ -155,7 +154,7 @@
                         if ($board[$pos][0][0] != $player) {
                             continue;
                         }
-                        // This also includes positions from the other player i think.
+
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>
@@ -165,13 +164,17 @@
             </select>
             <input type="submit" value="Move">
         </form>
+
         <form method="POST" action="src/game/pass.php">
             <input type="submit" value="Pass">
         </form>
+
         <form method="POST" action="src/game/restart.php">
             <input type="submit" value="Restart">
         </form>
+
         <strong><?php if (isset($_SESSION['error'])) echo($_SESSION['error']); unset($_SESSION['error']); ?></strong>
+        
         <ol>
             <?php
                 $db = database::getInstance()->get_connection();
@@ -183,9 +186,15 @@
                 }
             ?>
         </ol>
+
+        <form method="POST" action="src/game/ai_player.php">
+            <input type="submit" value="ai_move">
+        </form>
+
         <form method="POST" action="src/game/undo.php">
             <input type="submit" value="Undo">
         </form>
+
     </body>
 
     <script>
@@ -218,10 +227,8 @@
             });
         }
 
-        // Attach a change event handler to the first select
         $("#select-move-from").change(function() {
             var selectedValue = $(this).val();
-            // Make an AJAX request when the value changes
             updateOptions(selectedValue);
         });
 
