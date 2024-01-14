@@ -36,6 +36,7 @@ function slide($board, $from, $to) {
     if (!hasNeighBour($to, $board)) return false;
     if (!isNeighbour($from, $to)) return false;
 
+    // TODO: insect cant be trapped. need to revisit this.
     if (in_array($to, trace_contour($board, $from, 1))) {
         return true;
     }

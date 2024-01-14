@@ -88,3 +88,28 @@ function get_moves($board, $coordinates): array {
 
     return $moves;
 }
+
+/**
+ * This function looks if there is a winning state on the board
+ *
+ * @param [array] $board
+ * @return int, 0 = no win, 1 = white wins, 2 = black wins, 3 = draw
+ */
+function is_win($board): int {
+    // behaviour: queen is not surrounded, queen is surrounded, both queens are surrounded.
+    $return_value = 0;
+    foreach ($board as $b => $st) {
+        if ($st[0][1] == 'Q') {
+            $neighbors = neighbours($b);
+            if (!array_diff($neighbors, array_keys($board))) {
+                if ($st[0][0] == 0) {
+                    $return_value += 2;
+                } else if ($st[0][0] == 1) {
+                    $return_value += 1;
+                }
+            }
+        }
+    }
+
+    return $return_value;
+}

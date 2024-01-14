@@ -19,6 +19,8 @@
 
     $to = find_contour($board);
     if (!count($to)) $to[] = '0,0';
+
+    $win_var = is_win($board);
 ?>
 <!DOCTYPE html>
 <html>
@@ -144,7 +146,7 @@
                     }
                 ?>
             </select>
-            <input type="submit" value="Play">
+            <input type="submit" value="Play" id="play-btn">
         </form>
 
         <form method="POST" action="src/game/move.php">
@@ -162,15 +164,15 @@
             <select name="to" id="select-move-to">
                     <!-- is filled according to what is selected in the from select above. -->
             </select>
-            <input type="submit" value="Move">
+            <input type="submit" value="Move" id="move-btn">
         </form>
 
         <form method="POST" action="src/game/pass.php">
-            <input type="submit" value="Pass">
+            <input type="submit" value="Pass" id="pass-btn">
         </form>
 
         <form method="POST" action="src/game/restart.php">
-            <input type="submit" value="Restart">
+            <input type="submit" value="Restart" id="restart-btn">
         </form>
 
         <strong><?php if (isset($_SESSION['error'])) echo($_SESSION['error']); unset($_SESSION['error']); ?></strong>
@@ -188,17 +190,38 @@
         </ol>
 
         <form method="POST" action="src/game/ai_player.php">
-            <input type="submit" value="ai_move">
+            <input type="submit" value="Ai move" id="ai-btn">
         </form>
 
         <form method="POST" action="src/game/undo.php">
-            <input type="submit" value="Undo">
+            <input type="submit" value="Undo" id="undo-btn">
         </form>
 
     </body>
 
     <script>
     $(document).ready(function() {
+
+        var win_var = <?php echo $win_var ?>;
+        console.log(win_var)
+        if (win_var != 0) {
+            switch(win_var) {
+                case 1:
+                    alert("white wins!");
+                    break;
+                case 2:
+                    alert("black wins!");
+                    break;
+                case 3:
+                    alert("Draw!");
+                    break;
+            }
+            document.getElementById("play-btn").style.display = "none"
+            document.getElementById("move-btn").style.display = "none"
+            document.getElementById("undo-btn").style.display = "none"
+            document.getElementById("ai-btn").style.display = "none"
+            document.getElementById("pass-btn").style.display = "none"
+        }
 
         function updateOptions(selectedValue) {
             $.ajax({
