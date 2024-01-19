@@ -11,6 +11,8 @@ function undo_move($database) {
     $_SESSION['last_move'] = $result['previous_id'];
     set_state($result['state']);
 
+    // todo: remove the row from the database.
+
     // because we undo a move we also have to revert to the other player.
     $_SESSION['player'] = ($_SESSION['player'] == 0 ? 0 : 1);
 

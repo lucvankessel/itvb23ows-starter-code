@@ -5,4 +5,8 @@ class Grasshopper implements Insect {
         // TODO: add moves. diagonally
         return [];
     }
+
+    public function validMove(array $board, $from, $to): bool {
+        return true;
+    }
 }

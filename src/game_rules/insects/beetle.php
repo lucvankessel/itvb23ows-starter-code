@@ -5,4 +5,8 @@ class Beetle implements Insect {
         // TODO: support stacking tiles.
         return trace_contour($board, $coordinate, 1);
     }
+
+    public function validMove(array $board, $from, $to):bool {
+        return true;
+    }
 }

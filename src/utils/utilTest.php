@@ -41,10 +41,19 @@ class utilTest extends TestCase {
     }
 
     public function testSlide() {
-        $board = ['0,0' => [], '0,1' => [], '1,0' => []];
+        $trueBoard = ['0,-1' => [[0, 'B']], '0,0' => [[0, 'Q'] ], '0,1' => [[1, "B"]]];
+        $falseBoard = [
+            '0,0' => [[0, 'Q']], 
+            '0,1' => [[1, 'B']],
+            '0,-1' => [[0, 'B']],
+            '1,0' => [[1, 'A']],
+            '-1,0' => [[0, 'A']],
+            '-1,1' => [[1, 'Q']],
+            '1,-1' => [[0, 'G']]
+        ];
 
-        $this->assertTrue(slide($board, '1,0', '1,1'));
-        $this->assertFalse(slide($board, '0,0', '2,2'));
+        $this->assertTrue(slide($trueBoard, '0,-1', '-1,0'));
+        $this->assertFalse(slide($falseBoard, '0,0', '1,-1'));
     }
 
     public function testIsWin() {

@@ -35,9 +35,17 @@ function len($tile) {
 function slide($board, $from, $to) {
     if (!hasNeighBour($to, $board)) return false;
     if (!isNeighbour($from, $to)) return false;
+    $b = explode(',', $to);
+    $common = [];
+    foreach ($GLOBALS['OFFSETS'] as $pq) {
+        $p = $b[0] + $pq[0];
+        $q = $b[1] + $pq[1];
+        if (isNeighbour($from, $p.",".$q)) $common[] = $p.",".$q;
+    }
 
-    // TODO: insect cant be trapped. need to revisit this.
-    if (in_array($to, trace_contour($board, $from, 1))) {
+    // i check if one of the the 2 common tile is in the array, if either one is not there we can slide.
+    // otherwise there is not enough space for the tile to move.
+    if (!array_key_exists($common[0],$board) || !array_key_exists($common[1], $board)) {
         return true;
     }
     return false;

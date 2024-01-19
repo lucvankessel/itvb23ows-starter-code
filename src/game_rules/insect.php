@@ -17,6 +17,8 @@ interface Insect
      * @return array
      */
     public function moves(array $board, string $coordinate): array;
+
+    public function validMove(array $board, $from, $to): bool;
 }
 
 function neighbours($coordinate) {
