@@ -82,9 +82,13 @@ function get_moves($board, $coordinates): array {
     $insect_classes['A'] = new Ant;
     $insect_classes['G'] = new Grasshopper;
 
-    $piece = $board[$coordinates][0][1];
-    $class = $insect_classes[$piece];
-    $moves = $class->moves($board, $coordinates);
+    $moves = [];
+
+    if ($coordinates != "") {
+        $piece = $board[$coordinates][0][1];
+        $class = $insect_classes[$piece];
+        $moves = $class->moves($board, $coordinates);
+    }
 
     return $moves;
 }

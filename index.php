@@ -9,7 +9,7 @@
     include_once 'src/game_rules/insect.php';
 
     if (!isset($_SESSION['board'])) {
-        header('Location: src/game/restart.php');
+        header('Location: src/api/restart.php');
         exit(0);
     }
 
@@ -129,7 +129,7 @@
             Turn: <?php if ($player == 0) echo "White"; else echo "Black"; ?>
         </div>
 
-        <form method="post" action="src/game/play.php">
+        <form method="post" action="src/api/play.php">
             <select name="piece">
                 <?php
                     foreach( $hand[$player] as $title => $ct ) {
@@ -149,7 +149,7 @@
             <input type="submit" value="Play" id="play-btn">
         </form>
 
-        <form method="POST" action="src/game/move.php">
+        <form method="POST" action="src/api/move.php">
             <select name="from" id="select-move-from">
                 <?php
                     foreach (array_keys($board) as $pos) {
@@ -162,16 +162,16 @@
                 ?>
             </select>
             <select name="to" id="select-move-to">
-                    <!-- is filled according to what is selected in the from select above. -->
+                    <!-- is filled according to what is selected in the from select above. and is done through javascript -->
             </select>
             <input type="submit" value="Move" id="move-btn">
         </form>
 
-        <form method="POST" action="src/game/pass.php">
+        <form method="POST" action="src/api/pass.php">
             <input type="submit" value="Pass" id="pass-btn">
         </form>
 
-        <form method="POST" action="src/game/restart.php">
+        <form method="POST" action="src/api/restart.php">
             <input type="submit" value="Restart" id="restart-btn">
         </form>
 
@@ -189,11 +189,11 @@
             ?>
         </ol>
 
-        <form method="POST" action="src/game/ai_player.php">
+        <form method="POST" action="src/api/ai_player.php">
             <input type="submit" value="Ai move" id="ai-btn">
         </form>
 
-        <form method="POST" action="src/game/undo.php">
+        <form method="POST" action="src/api/undo.php">
             <input type="submit" value="Undo" id="undo-btn">
         </form>
 
@@ -225,7 +225,7 @@
 
         function updateOptions(selectedValue) {
             $.ajax({
-                url: "http://localhost:8000/src/game/get_options.php",
+                url: "http://localhost:8000/src/api/get_options.php",
                 type: "POST",
                 data: { from: selectedValue },
                 dataType: "json",

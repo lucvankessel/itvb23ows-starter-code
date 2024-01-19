@@ -32,4 +32,3 @@ class database {
         return self::$db;
     }
 }
-?>

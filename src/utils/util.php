@@ -42,5 +42,3 @@ function slide($board, $from, $to) {
     }
     return false;
 }
-
-?>

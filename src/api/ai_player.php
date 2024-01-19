@@ -34,7 +34,6 @@ $data = json_encode($ai_obj);
 $ai_move = json_decode(httpPost($url, $data), true);
 // This ai move we can put directly into the database.
 // maybe make of the database insert a generic function.
-// print_r($ai_move);
 
 $state = get_state();
 $move_options = [$_SESSION['game_id'], $ai_move[0], $ai_move[1], $ai_move[2], $_SESSION['last_move']??null, $state];
