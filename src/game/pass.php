@@ -14,7 +14,7 @@ function pass_move($database) {
     $hand = $_SESSION['hand'];
     if(!playerCanPass($board, $hand, $player)) {
         $_SESSION['ERROR'] = "player has a valid move it can play, no pass allowed!";
-        return true;
+        return false;
     }
     
     $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "pass", null, null, ?, ?)');

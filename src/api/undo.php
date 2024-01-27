@@ -5,9 +5,9 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/undo.php';
 
-$db = database::getInstance()->get_connection();
+$database = database::getInstance()->get_connection();
 
-if (undo_move($db)) {
+if (undo_move($database)) {
     header('Location: /');
     exit(0);
 } else {
