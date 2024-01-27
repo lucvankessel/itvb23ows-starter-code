@@ -58,3 +58,18 @@ function isValidPlay($board, $hand, $player, $piece, $to): bool {
 
     return true;
 }
+
+function isValidPlayTile($board, $hand, $player, $to){
+    if (isset($board[$to])){
+        $_SESSION['error'] = 'Board position is not empty';
+        return false;
+    }elseif (count($board) && !hasNeighBour($to, $board)) {
+        $_SESSION['error'] = "board position has no neighbour";
+        return false;
+    }elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+        $_SESSION['error'] = "Board position has opposing neighbour";
+        return false;
+    }
+
+    return true;
+}

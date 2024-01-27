@@ -15,7 +15,7 @@ if(isset($_POST['from'])) {
     $valid_moves = [];
     $moves = get_moves($board, $selected);
     foreach($moves as $move) {
-        if(isValidMove($board, $_SESSION['hand'], $_SESSION['player'], $selected, $move)) {
+        if(isValidMove($board, $_SESSION['hand'][$_SESSION['player']], $_SESSION['player'], $selected, $move)) {
             $valid_moves[] = $move;
         }
         unset($_SESSION['error']);
