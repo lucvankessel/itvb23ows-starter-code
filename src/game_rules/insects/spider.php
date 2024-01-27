@@ -6,6 +6,11 @@ class Spider implements Insect {
     }
 
     public function validMove(array $board, $from, $to): bool {
-        return true;
+        $possible_moves = $this->moves($board, $from);
+        if (in_array($to, $possible_moves)) {
+            return true;
+        }
+
+        return False;
     }
 }

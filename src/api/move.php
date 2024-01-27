@@ -2,8 +2,8 @@
 
 session_start();
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/move.php';
+include_once dirname(__FILE__) .'/../db/database.php';
+include_once dirname(__FILE__) .'/../game/move.php';
 
 $from = $_POST['from'];
 $to = $_POST['to'];

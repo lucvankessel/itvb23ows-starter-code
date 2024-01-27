@@ -2,26 +2,16 @@
 
 session_start();
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/utils/util.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
+include_once dirname(__FILE__).'/../utils/util.php';
+include_once dirname(__FILE__).'/../db/database.php';
+include_once dirname(__FILE__).'/../game_rules/insect.php';
 
 function play_move($database, $piece, $to) {
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];
-    $hand = $_SESSION['hand'][$player];
+    $hand = $_SESSION['hand'];
 
-    if (!$hand[$piece])
-        $_SESSION['error'] = "Player does not have tile";
-    elseif (isset($board[$to]))
-        $_SESSION['error'] = 'Board position is not empty';
-    elseif (count($board) && !hasNeighBour($to, $board))
-        $_SESSION['error'] = "board position has no neighbour";
-    elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board))
-        $_SESSION['error'] = "Board position has opposing neighbour";
-    elseif (array_sum($hand) <= 8 && $hand['Q'] && $piece != 'Q') {
-        $_SESSION['error'] = 'Must play queen bee';
-    } else {
+    if (isValidPlay($board, $hand, $player, $piece, $to)) {
         $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
         $_SESSION['hand'][$player][$piece]--;
         $_SESSION['player'] = 1 - $_SESSION['player'];
@@ -37,7 +27,31 @@ function play_move($database, $piece, $to) {
         {
             $_SESSION['error'] = 'Some error from PDO';
         }
+        return true;
+    } else {
+        return false;
     }
-    
+}
+
+function isValidPlay($board, $hand, $player, $piece, $to): bool {
+    $hand = $hand[$player];
+
+    if (!$hand[$piece]) {
+        $_SESSION['error'] = "Player does not have tile";
+        return false;
+    }elseif (isset($board[$to])){
+        $_SESSION['error'] = 'Board position is not empty';
+        return false;
+    }elseif (count($board) && !hasNeighBour($to, $board)) {
+        $_SESSION['error'] = "board position has no neighbour";
+        return false;
+    }elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+        $_SESSION['error'] = "Board position has opposing neighbour";
+        return false;
+    }elseif (array_sum($hand) <= 8 && $hand['Q'] && $piece != 'Q') {
+        $_SESSION['error'] = 'Must play queen bee';
+        return false;
+    }
+
     return true;
 }

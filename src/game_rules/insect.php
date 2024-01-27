@@ -62,10 +62,25 @@ function trace_contour($state, $coordinate, $steps = 1) {
     while ($todo) {
         [$c, $n] = array_pop($todo);
         foreach (neighbours($c) as $neighbour) {
-            if (in_array($neighbour, $contour) && !in_array($neighbour, $visited) && !array_key_exists($neighbour, $state)) {
+            if (
+                in_array($neighbour, $contour) && 
+                !in_array($neighbour, $visited) && 
+                !array_key_exists($neighbour, $state) && 
+                slide($state, $c, $neighbour)) {
                 $visited[] = $neighbour;
-                if ($n == $steps) {
+                
+                if ($steps == -1) {
+                    if ($c != $coordinate) { 
                         $return[] = $c;
+                    }
+                    $todo[] = [$neighbour, $n + 1];
+                    continue;
+                }
+
+                if ($n == $steps) {
+                    if ($c != $coordinate) {
+                        $return[] = $c;
+                    }
                 } else {
                     $todo[] = [$neighbour, $n + 1];
                 }

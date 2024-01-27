@@ -1,13 +1,65 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
-class GrasshopperTest extends TestCase {}
+class GrasshopperTest extends TestCase {
 
-// a. Een sprinkhaan verplaatst zich door in een rechte lijn een sprong te maken naar een veld meteen achter een andere steen in de richting van de sprong.
-// een richting van de sprong is elk item in de offsets lijkt mij, door al deze door te lopen en bij elkaar op blijven tellen todat een leeg punt word berijkt.s
+    public function testGrasshopperMovesInStraightLine() {
+        $grasshopper = new Grasshopper();
 
-// b. Een sprinkhaan mag zich niet verplaatsen naar het veld waar hij al staat.
-// c. Een sprinkhaan moet over minimaal één steen springen.
-// d. Een sprinkhaan mag niet naar een bezet veld springen.
-// e. Een sprinkhaan mag niet over lege velden springen. Dit betekent dat alle
-// velden tussen de start- en eindpositie bezet moeten zijn.
+        $board = [
+            "0,0" => [],
+            "0,1" => []
+        ];
+
+        // a. Een sprinkhaan verplaatst zich door in een rechte lijn een sprong te maken naar een veld meteen achter een andere steen in de richting van de sprong.
+        $this->assertTrue($grasshopper->validMove($board, "0,0", "0,2"));
+    }
+
+    public function testGrasshopperCantMoveToFieldItIsAlreadyOn() {
+        $grasshopper = new Grasshopper();
+
+        $board = [
+            "0,0" => [],
+            "0,1" => []
+        ];
+
+        // b. Een sprinkhaan mag zich niet verplaatsen naar het veld waar hij al staat.
+        $this->assertFalse($grasshopper->validMove($board, "0,0", "0,0"));
+    }
+
+    public function testGrasshopperMustJumpOverAtleastOneStone() {
+        $grasshopper = new Grasshopper();
+
+        $board = [
+            "0,0" => []
+        ];
+
+        // c. Een sprinkhaan moet over minimaal één steen springen.
+        $this->assertFalse($grasshopper->validMove($board, "0,0", "0,1"));
+    }
+
+    public function testGrasshopperCantJumpToOccupiedField() {
+        $grasshopper = new Grasshopper();
+
+        $board = [
+            "0,0" => [],
+            "0,1" => [],
+            "0,2" => []
+        ];
+        // d. Een sprinkhaan mag niet naar een bezet veld springen.
+        $this->assertFalse($grasshopper->validMove($board, "0,0", "0,2"));
+    }
+
+    public function testGrasshopperMustJumpOverOccupiedLineOfTiles() {
+        $grasshopper = new Grasshopper();
+
+        $board = [
+            "0,0" => [],
+            "0,1" => [],
+            "0,3" => []
+        ];
+
+        // e. Een sprinkhaan mag niet over lege velden springen. Dit betekent dat alle velden tussen de start- en eindpositie bezet moeten zijn.
+        $this->assertFalse($grasshopper->validMove($board, "0,0", "0,4"));
+    }
+}

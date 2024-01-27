@@ -2,14 +2,34 @@
 
 session_start();
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/utils/util.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
+include_once dirname(__FILE__) .'/../utils/util.php';
+include_once dirname(__FILE__) .'/../db/database.php';
+include_once dirname(__FILE__) .'/../game_rules/insect.php';
 
 function move_piece($database, $from, $to) {
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];
     $hand = $_SESSION['hand'][$player];
+    unset($_SESSION['error']);
+    
+    if (!isValidMove($board, $hand, $player, $from, $to)) {
+        return false;
+    } else {
+        $tile = array_pop($board[$from]);
+        if (isset($board[$to])) array_push($board[$to], $tile);
+        else $board[$to] = [$tile];
+        $_SESSION['player'] = 1 - $_SESSION['player'];
+        $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
+        $stmt->execute(array($_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state()));
+        $_SESSION['last_move'] = $database->lastInsertId();
+        unset($board[$from]);
+    }
+    $_SESSION['board'] = $board;
+
+    return true;
+}
+
+function isValidMove($board, $hand, $player, $from, $to): bool {
     unset($_SESSION['error']);
 
     if (!isset($board[$from]))
@@ -51,16 +71,11 @@ function move_piece($database, $from, $to) {
         if (isset($_SESSION['error'])) {
             if (isset($board[$from])) array_push($board[$from], $tile);
             else $board[$from] = [$tile];
-        } else {
-            if (isset($board[$to])) array_push($board[$to], $tile);
-            else $board[$to] = [$tile];
-            $_SESSION['player'] = 1 - $_SESSION['player'];
-            $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
-            $stmt->execute(array($_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state()));
-            $_SESSION['last_move'] = $database->lastInsertId();
-            unset($board[$from]);
         }
-        $_SESSION['board'] = $board;
+    }
+
+    if(isset($_SESSION['error'])) {
+        return false;
     }
 
     return true;

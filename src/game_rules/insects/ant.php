@@ -2,10 +2,16 @@
 
 class Ant implements Insect {
     public function moves(array $board, string $coordinate): array {
-        return find_contour($board, [$coordinate]);
+        // return find_contour($board, [$coordinate]);
+        return trace_contour($board, $coordinate, -1);
     }
 
     public function validMove(array $board, $from, $to): bool {
-        return true;
+        $possible_moves = $this->moves($board, $from);
+        if (in_array($to, $possible_moves)) {
+            return true;
+        }
+
+        return False;
     }
 }
