@@ -2,9 +2,12 @@
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
 
-function undo_move($database) {
-    session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
+function undo_move($database) {
     $stmt = $database->prepare('SELECT * FROM moves WHERE id = ?');
     $stmt->execute([$_SESSION['last_move']]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);

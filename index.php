@@ -2,11 +2,15 @@
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 
-    session_start();
+    if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 
     include_once 'src/utils/util.php';
     include_once 'src/db/database.php';
     include_once 'src/game_rules/insect.php';
+    include_once 'src/game/play.php';
 
     if (!isset($_SESSION['board'])) {
         header('Location: src/api/restart.php');
@@ -133,7 +137,7 @@
             <select name="piece">
                 <?php
                     foreach( $hand[$player] as $title => $ct ) {
-                        for ($i = 0; $i < $ct; $i++) {
+                        if ($ct > 0) {
                             echo "<option value=\"$title\">$title</option>";
                         }
                     }

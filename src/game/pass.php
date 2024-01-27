@@ -3,8 +3,12 @@ include_once dirname(__FILE__).'/play.php';
 include_once dirname(__FILE__) .'/move.php';
 include_once dirname(__FILE__).'/../utils/util.php';
 
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
+
 function pass_move($database) {
-    session_start();
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];
     $hand = $_SESSION['hand'];
@@ -22,8 +26,6 @@ function pass_move($database) {
 }
 
 function playerCanPass($board, $hand, $player):bool {
-    session_start();
-
     $to = find_contour($board);
 
     // check if there is something on the board.

@@ -1,6 +1,9 @@
 <?php
 
-session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
 include_once dirname(__FILE__) .'/../db/database.php';
 include_once dirname(__FILE__) .'/../game/move.php';

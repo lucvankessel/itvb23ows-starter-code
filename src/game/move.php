@@ -1,6 +1,9 @@
 <?php
 
-session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
 include_once dirname(__FILE__) .'/../utils/util.php';
 include_once dirname(__FILE__) .'/../db/database.php';
@@ -36,7 +39,7 @@ function isValidMove($board, $hand, $player, $from, $to): bool {
         $_SESSION['error'] = 'Board position is empty';
     elseif ($board[$from][count($board[$from])-1][0] != $player)
         $_SESSION['error'] = "Tile is not owned by player";
-    elseif ($hand['Q'])
+    elseif (!isset($hand['Q']))
         $_SESSION['error'] = "Queen bee is not played";
     else {
         $tile = array_pop($board[$from]);
