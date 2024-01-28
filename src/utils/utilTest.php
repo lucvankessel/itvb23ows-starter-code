@@ -3,16 +3,19 @@ require_once "util.php";
 require_once __DIR__ .'/../game_rules/insect.php';
 
 use PHPUnit\Framework\TestCase;
+
 use function util\hasNeighBour;
 use function util\isNeighbour;
 use function util\len;
 use function util\neighboursAreSameColor;
 use function util\slide;
-use function insects\is_win;
+use function insects\isWin;
 
-class utilTest extends TestCase {
+class UtilTest extends TestCase
+{
 
-    public function testIsNeighbour() {
+    public function testIsNeighbour()
+    {
         $this->assertTrue(isNeighbour('0,0', '0,1'));
         $this->assertTrue(isNeighbour('0,0', '1,0'));
         $this->assertTrue(isNeighbour('0,0', '0,-1'));
@@ -24,13 +27,15 @@ class utilTest extends TestCase {
         $this->assertFalse(isNeighbour('0,0', '2,2'));
     }
 
-    public function testHasNeighBour() {
+    public function testHasNeighBour()
+    {
         $board = ['0,0' => [], '0,1' => [], '1,0' => []];
         $this->assertTrue(hasNeighBour('0,0', $board));
         $this->assertNull(hasNeighBour('2,2', $board));
     }
 
-    public function testNeighboursAreSameColor() {
+    public function testNeighboursAreSameColor()
+    {
         $board = [
             '0,0' => [['B', 1]],
             '0,1' => [['B', 2]],
@@ -41,20 +46,22 @@ class utilTest extends TestCase {
         $this->assertFalse(neighboursAreSameColor('B', '1,1', $board));
     }
 
-    public function testLen() {
+    public function testLen()
+    {
         $this->assertEquals(0, len([]));
         $this->assertEquals(3, len([['B'], ['B'], ['B']]));
     }
 
-    public function testSlide() {
+    public function testSlide()
+    {
         $trueBoard = [
-            '0,-1' => [[0, 'B']], 
-            '0,0' => [[0, 'Q'] ], 
+            '0,-1' => [[0, 'B']],
+            '0,0' => [[0, 'Q'] ],
             '0,1' => [[1, "B"]]
         ];
 
         $falseBoard = [
-            '0,0' => [[0, 'Q']], 
+            '0,0' => [[0, 'Q']],
             '0,1' => [[1, 'B']],
             '0,-1' => [[0, 'B']],
             '1,0' => [[1, 'A']],
@@ -66,9 +73,10 @@ class utilTest extends TestCase {
         $this->assertFalse(slide($falseBoard, '0,0', '1,-1'));
     }
 
-    public function testIsWin() {
-        $win_board = [
-            '0,0' => [[0, 'Q']], 
+    public function testIsWin()
+    {
+        $winBoard = [
+            '0,0' => [[0, 'Q']],
             '1,0' => [[1, 'B']],
             '-1,0' => [[0, 'B']],
             '0,-1' => [[0, 'B']],
@@ -79,8 +87,9 @@ class utilTest extends TestCase {
             '-2,2' => [[0, 'S']],
             '1,-1' => [[0, 'A']]
         ];
-        $no_win_board = [            
-            '0,0' => [[0, 'Q']], 
+
+        $noWinBoard = [
+            '0,0' => [[0, 'Q']],
             '1,0' => [[1, 'B']],
             '-1,0' => [[0, 'B']],
             '0,1' => [[1, 'B']],
@@ -90,8 +99,9 @@ class utilTest extends TestCase {
             '-2,2' => [[0, 'S']],
             '1,-1' => [[0, 'A']]
         ];
-        $draw_board = [
-            '0,0' => [[0, 'Q']], 
+
+        $drawBoard = [
+            '0,0' => [[0, 'Q']],
             '1,0' => [[1, 'B']],
             '-1,0' => [[0, 'B']],
             '0,-1' => [[0, 'B']],
@@ -108,9 +118,9 @@ class utilTest extends TestCase {
             '0,2' => [[0, 'A']]
         ];
 
-        $this->assertEquals(0, is_win($no_win_board)); // no queen circled.
-        $this->assertEquals(2, is_win($win_board)); // black wins.
-        $this->assertEquals(3, is_win($draw_board)); // draw, both queens circled.
+        $this->assertEquals(0, isWin($noWinBoard)); // no queen circled.
+        $this->assertEquals(2, isWin($winBoard)); // black wins.
+        $this->assertEquals(3, isWin($drawBoard)); // draw, both queens circled.
     }
 
 }

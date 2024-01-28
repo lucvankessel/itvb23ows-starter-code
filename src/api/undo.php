@@ -5,14 +5,13 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/undo.php';
 use db\connection;
 use game\undo;
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-$database = connection\database::getInstance()->get_connection();
+$database = connection\Database::getInstance()->getConnection();
 
-if (undo\undo_move($database)) {
+if (undo\undoMove($database)) {
     header('Location: /');
     exit(0);
 } else {

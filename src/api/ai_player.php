@@ -5,12 +5,11 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/moves.php';
 use db\connection;
 use db\moves;
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-$db = connection\database::getInstance()->get_connection();
+$db = connection\Database::getInstance()->getConnection();
 
 $move_number;
 try {
@@ -18,7 +17,7 @@ try {
     $stmt->execute([$_SESSION['game_id']]);
     $result = $stmt->fetchall(PDO::FETCH_ASSOC);
     $move_number = $result[0]['count']; // TODO: get correct key.
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     $_SESSION['error'] = $e->getMessage();
     header('Location: /');
     exit();
@@ -40,22 +39,19 @@ $ai_move = json_decode(httpPost($url, $data), true);
 // This ai move we can put directly into the database.
 // maybe make of the database insert a generic function.
 
-$state = connection\get_state();
+$state = connection\getState();
 $move_options = [$_SESSION['game_id'], $ai_move[0], $ai_move[1], $ai_move[2], $_SESSION['last_move']??null, $state];
 
-$db = connection\database::getInstance()->get_connection();
-$insert_result = moves\insert_move($db, $move_options);
+$db = connection\Database::getInstance()->getConnection();
+$insert_result = moves\insertMove($db, $move_options);
 
 // update board, update hand.
-switch ($ai_move[0]) {
-    case 'play':
-        $_SESSION['board'][$ai_move[2]] = [[$_SESSION['player'], $ai_move[1]]];
-        $_SESSION['hand'][$_SESSION['player']][$ai_move[1]]--;
-        break;
-    case 'move';
-        $_SESSION['board'][$ai_move[2]] = array_pop($_SESSION['board'][$ai_move[1]]);
-        unset($board[$ai_move[1]]);
-        break;
+if ($ai_move[0] == "play") {
+    $_SESSION['board'][$ai_move[2]] = [[$_SESSION['player'], $ai_move[1]]];
+    $_SESSION['hand'][$_SESSION['player']][$ai_move[1]]--;
+} elseif ($ai_move[0]) {
+    $_SESSION['board'][$ai_move[2]] = array_pop($_SESSION['board'][$ai_move[1]]);
+    unset($board[$ai_move[1]]);
 }
 
 $_SESSION['last_move'] = $insert_result['id'];

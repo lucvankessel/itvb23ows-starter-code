@@ -3,9 +3,11 @@
 use PHPUnit\Framework\TestCase;
 use insects\spider;
 
-class SpiderTest extends TestCase {
+class SpiderTest extends TestCase
+{
 
-    public function testSpiderMoves3Tiles() {
+    public function testSpiderMoves3Tiles()
+    {
         $spider = new spider\Spider();
         $board = [
             "0,0" => [],
@@ -20,7 +22,8 @@ class SpiderTest extends TestCase {
         $this->assertFalse($spider->validMove($board, "0,0", "1,3"));
     }
 
-    public function testSpiderSlides() {
+    public function testSpiderSlides()
+    {
         $spider = new spider\Spider();
 
         $boardFalse = [
@@ -45,7 +48,8 @@ class SpiderTest extends TestCase {
         $this->assertFalse($spider->validMove($boardFalse, "0,0", "0,2"));
     }
 
-    public function testSpiderMoveToOwnPosition() {
+    public function testSpiderMoveToOwnPosition()
+    {
         $spider = new spider\Spider();
 
         $board = [
@@ -61,7 +65,8 @@ class SpiderTest extends TestCase {
         $this->assertFalse($spider->validMove($board, "0,0", "0,0"));
     }
 
-    public function testSpiderMoveToEmptyField() {
+    public function testSpiderMoveToEmptyField()
+    {
         $spider = new spider\Spider();
 
         $board = [

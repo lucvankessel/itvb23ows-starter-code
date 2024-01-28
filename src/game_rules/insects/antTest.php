@@ -3,9 +3,11 @@
 use PHPUnit\Framework\TestCase;
 use insects\ant;
 
-class AntTest extends TestCase {
+class AntTest extends TestCase
+{
 
-    public function testAntMovesWithoutStepLimit() {
+    public function testAntMovesWithoutStepLimit()
+    {
         $ant = new ant\Ant();
 
         $board = [
@@ -21,7 +23,8 @@ class AntTest extends TestCase {
         $this->assertTrue($ant->validMove($board, "0,0", "1,5"));
     }
 
-    public function testAntSlide() {
+    public function testAntSlide()
+    {
         $ant = new ant\Ant();
 
         $board = [
@@ -38,7 +41,8 @@ class AntTest extends TestCase {
         $this->assertTrue($ant->validMove($board, "-1,1", "-2,0"));
     }
 
-    public function testAntCantMoveToSamePlace() {
+    public function testAntCantMoveToSamePlace()
+    {
         $ant = new ant\Ant();
 
         $board = [
@@ -54,7 +58,8 @@ class AntTest extends TestCase {
         $this->assertFalse($ant->validMove($board, "0,0", "0,0"));
     }
 
-    public function testAntMoveOnEmptyFields() {
+    public function testAntMoveOnEmptyFields()
+    {
         $ant = new ant\Ant();
 
         $board = [

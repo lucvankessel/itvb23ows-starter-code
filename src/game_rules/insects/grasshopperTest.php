@@ -2,9 +2,11 @@
 use PHPUnit\Framework\TestCase;
 use insects\grasshopper;
 
-class GrasshopperTest extends TestCase {
+class GrasshopperTest extends TestCase
+{
 
-    public function testGrasshopperMovesInStraightLine() {
+    public function testGrasshopperMovesInStraightLine()
+    {
         $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
@@ -16,7 +18,8 @@ class GrasshopperTest extends TestCase {
         $this->assertTrue($grasshopper->validMove($board, "0,0", "0,2"));
     }
 
-    public function testGrasshopperCantMoveToFieldItIsAlreadyOn() {
+    public function testGrasshopperCantMoveToFieldItIsAlreadyOn()
+    {
         $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
@@ -28,7 +31,8 @@ class GrasshopperTest extends TestCase {
         $this->assertFalse($grasshopper->validMove($board, "0,0", "0,0"));
     }
 
-    public function testGrasshopperMustJumpOverAtleastOneStone() {
+    public function testGrasshopperMustJumpOverAtleastOneStone()
+    {
         $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
@@ -39,7 +43,8 @@ class GrasshopperTest extends TestCase {
         $this->assertFalse($grasshopper->validMove($board, "0,0", "0,1"));
     }
 
-    public function testGrasshopperCantJumpToOccupiedField() {
+    public function testGrasshopperCantJumpToOccupiedField()
+    {
         $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
@@ -51,7 +56,8 @@ class GrasshopperTest extends TestCase {
         $this->assertFalse($grasshopper->validMove($board, "0,0", "0,2"));
     }
 
-    public function testGrasshopperMustJumpOverOccupiedLineOfTiles() {
+    public function testGrasshopperMustJumpOverOccupiedLineOfTiles()
+    {
         $grasshopper = new grasshopper\Grasshopper();
 
         $board = [

@@ -5,14 +5,13 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
 use db\connection;
 use game\restart;
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-$db = connection\database::getInstance()->get_connection();
+$db = connection\Database::getInstance()->getConnection();
 
-if (restart\restart_game($db)) {
+if (restart\restartGame($db)) {
     header('Location: /');
     exit(0);
 } else {

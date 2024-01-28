@@ -3,7 +3,7 @@
     ini_set('display_errors', '1');
 
     if (!isset($_SESSION)) {
-        session_start(); 
+        session_start();
     }
 
     require_once 'src/utils/util.php';
@@ -12,7 +12,6 @@
     require_once 'src/game/play.php';
 
     use db\connection;
-    use \insects;
     use game\play;
 
     if (!isset($_SESSION['board'])) {
@@ -24,10 +23,10 @@
     $player = $_SESSION['player'];
     $hand = $_SESSION['hand'];
 
-    $to = insects\find_contour($board);
+    $to = insects\findContour($board);
     if (!count($to)) $to[] = '0,0';
 
-    $win_var = insects\is_win($board);
+    $win_var = insects\isWin($board);
 ?>
 <!DOCTYPE html>
 <html>
@@ -139,7 +138,7 @@
         <form method="post" action="src/api/play.php">
             <select name="piece">
                 <?php
-                    foreach( $hand[$player] as $title => $ct ) {
+                    foreach ($hand[$player] as $title => $ct) {
                         if ($ct > 0) {
                             echo "<option value=\"$title\">$title</option>";
                         }
@@ -149,7 +148,7 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
-                        if(play\isValidPlayTile($board, $hand[$player], $player, $pos)) {
+                        if (play\isValidPlayTile($board, $hand[$player], $player, $pos)) {
                             echo "<option value=\"$pos\">$pos</option>";
                         }
                     }
@@ -171,7 +170,7 @@
                 ?>
             </select>
             <select name="to" id="select-move-to">
-                    <!-- is filled according to what is selected in the from select above. and is done through javascript -->
+                    <!-- filled through javascript -->
             </select>
             <input type="submit" value="Move" id="move-btn">
         </form>
@@ -188,11 +187,11 @@
         
         <ol>
             <?php
-                $db = connection\database::getInstance()->get_connection();
+                $db = connection\Database::getInstance()->getConnection();
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ?');
                 $stmt->execute([$_SESSION['game_id']]);
                 $result = $stmt->fetchall(PDO::FETCH_ASSOC);
-                foreach($result as $key=>$row) {
+                foreach ($result as $key => $row) {
                     echo '<li>'.$row['type'].' '.$row['move_from'].' '.$row['move_to'].'</li>';
                 }
             ?>
@@ -272,4 +271,3 @@
 </script>
 
 </html>
-

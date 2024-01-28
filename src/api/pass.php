@@ -4,8 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/pass.php';
 use game\pass;
 use db\connection;
 
-$db = connection\database::getInstance()->get_connection();
-if (pass\pass_move($db)) {
+$db = connection\Database::getInstance()->getConnection();
+if (pass\passMove($db)) {
     header('Location: /');
     exit(0);
 } else {

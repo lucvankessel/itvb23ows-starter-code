@@ -32,7 +32,8 @@ interface Insect
     public function validMove(array $board, $from, $to): bool;
 }
 
-function neighbours($coordinate) {
+function neighbours($coordinate)
+{
     $neighbours = [];
     foreach ($GLOBALS['OFFSETS'] as $pq) {
         $pq2 = explode(',', $coordinate);
@@ -41,7 +42,8 @@ function neighbours($coordinate) {
     return $neighbours;
 }
 
-function find_contour($board, $exclude = []):array {
+function findContour($board, $exclude = []):array
+{
     $to = [];
     foreach ($GLOBALS['OFFSETS'] as $pq) {
         foreach (array_keys($board) as $pos) {
@@ -49,11 +51,11 @@ function find_contour($board, $exclude = []):array {
             if (!in_array($pos, $exclude)) {
                 $pq2 = explode(',', $pos);
                 if (util\hasNeighBour($pos, $board)) {
-                    $new_pos = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
-                    if( isset($board[$new_pos]) ) {
+                    $newPos = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                    if (isset($board[$newPos])) {
                         continue;
                     }
-                    $to[] = $new_pos; 
+                    $to[] = $newPos;
                 }
             }
         }
@@ -62,8 +64,9 @@ function find_contour($board, $exclude = []):array {
     return $to;
 }
 
-function trace_contour($state, $coordinate, $steps = 1) {
-    $contour = find_contour($state, [$coordinate]);
+function traceContour($state, $coordinate, $steps = 1)
+{
+    $contour = findContour($state, [$coordinate]);
 
     $visited = [];
     $todo = [[$coordinate, 0]];
@@ -74,14 +77,14 @@ function trace_contour($state, $coordinate, $steps = 1) {
         [$c, $n] = array_pop($todo);
         foreach (neighbours($c) as $neighbour) {
             if (
-                in_array($neighbour, $contour) && 
-                !in_array($neighbour, $visited) && 
-                !array_key_exists($neighbour, $state) && 
+                in_array($neighbour, $contour) &&
+                !in_array($neighbour, $visited) &&
+                !array_key_exists($neighbour, $state) &&
                 util\slide($state, $c, $neighbour)) {
                 $visited[] = $neighbour;
                 
                 if ($steps == -1) {
-                    if ($c != $coordinate) { 
+                    if ($c != $coordinate) {
                         $return[] = $c;
                     }
                     $todo[] = [$neighbour, $n + 1];
@@ -102,19 +105,20 @@ function trace_contour($state, $coordinate, $steps = 1) {
     return array_unique($return);
 }
 
-function get_moves($board, $coordinates): array {
-    $insect_classes = [];
-    $insect_classes['Q'] = new queen\Queen;
-    $insect_classes['B'] = new beetle\Beetle;
-    $insect_classes['S'] = new spider\Spider;
-    $insect_classes['A'] = new ant\Ant;
-    $insect_classes['G'] = new grasshopper\Grasshopper;
+function getMoves($board, $coordinates): array
+{
+    $insectClasses = [];
+    $insectClasses['Q'] = new queen\Queen;
+    $insectClasses['B'] = new beetle\Beetle;
+    $insectClasses['S'] = new spider\Spider;
+    $insectClasses['A'] = new ant\Ant;
+    $insectClasses['G'] = new grasshopper\Grasshopper;
 
     $moves = [];
 
     if ($coordinates != "") {
         $piece = $board[$coordinates][0][1];
-        $class = $insect_classes[$piece];
+        $class = $insectClasses[$piece];
         $moves = $class->moves($board, $coordinates);
     }
 
@@ -127,21 +131,22 @@ function get_moves($board, $coordinates): array {
  * @param [array] $board
  * @return int, 0 = no win, 1 = white wins, 2 = black wins, 3 = draw
  */
-function is_win($board): int {
+function isWin($board): int
+{
     // behaviour: queen is not surrounded, queen is surrounded, both queens are surrounded.
-    $return_value = 0;
+    $returnValue = 0;
     foreach ($board as $b => $st) {
         if ($st[0][1] == 'Q') {
             $neighbors = neighbours($b);
             if (!array_diff($neighbors, array_keys($board))) {
                 if ($st[0][0] == 0) {
-                    $return_value += 2;
-                } else if ($st[0][0] == 1) {
-                    $return_value += 1;
+                    $returnValue += 2;
+                } elseif ($st[0][0] == 1) {
+                    $returnValue += 1;
                 }
             }
         }
     }
 
-    return $return_value;
+    return $returnValue;
 }

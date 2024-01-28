@@ -8,12 +8,12 @@ require_once dirname(__FILE__).'/../game_rules/insect.php';
 use util;
 use db\connection;
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-function play_move($database, $piece, $to) {
+function playMove($database, $piece, $to)
+{
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];
     $hand = $_SESSION['hand'];
@@ -23,15 +23,12 @@ function play_move($database, $piece, $to) {
         $_SESSION['hand'][$player][$piece]--;
         $_SESSION['player'] = 1 - $_SESSION['player'];
 
-        $state = connection\get_state();
-        try
-        {    
+        $state = connection\getState();
+        try {
             $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
             $stmt->execute([$_SESSION['game_id'], $piece, $to, $_SESSION['last_move'] ?? null, $state]);
             $_SESSION['last_move'] = $database->lastInsertId();
-        }
-        catch (\PDOException $e)
-        {
+        } catch (\PDOException $e) {
             $_SESSION['error'] = 'Some error from PDO';
         }
         return true;
@@ -40,13 +37,14 @@ function play_move($database, $piece, $to) {
     }
 }
 
-function isValidPlay($board, $hand, $player, $piece, $to): bool {
+function isValidPlay($board, $hand, $player, $piece, $to): bool
+{
     $hand = $hand[$player];
 
     if (!$hand[$piece]) {
         $_SESSION['error'] = "Player does not have tile";
         return false;
-    }elseif (isset($board[$to])){
+    }elseif (isset($board[$to])) {
         $_SESSION['error'] = 'Board position is not empty';
         return false;
     }elseif (count($board) && !util\hasNeighBour($to, $board)) {
@@ -63,8 +61,9 @@ function isValidPlay($board, $hand, $player, $piece, $to): bool {
     return true;
 }
 
-function isValidPlayTile($board, $hand, $player, $to){
-    if (isset($board[$to])){
+function isValidPlayTile($board, $hand, $player, $to)
+{
+    if (isset($board[$to])) {
         return false;
     }elseif (count($board) && !util\hasNeighBour($to, $board)) {
         return false;
