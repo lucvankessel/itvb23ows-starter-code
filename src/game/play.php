@@ -1,13 +1,12 @@
 <?php
+include_once dirname(__FILE__).'/../utils/util.php';
+include_once dirname(__FILE__).'/../db/database.php';
+include_once dirname(__FILE__).'/../game_rules/insect.php';
 
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
-
-include_once dirname(__FILE__).'/../utils/util.php';
-include_once dirname(__FILE__).'/../db/database.php';
-include_once dirname(__FILE__).'/../game_rules/insect.php';
 
 function play_move($database, $piece, $to) {
     $player = $_SESSION['player'];

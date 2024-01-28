@@ -1,12 +1,11 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
 
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
-
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
 
 $db = database::getInstance()->get_connection();
 

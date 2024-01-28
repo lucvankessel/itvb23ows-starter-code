@@ -1,9 +1,11 @@
 <?php
-
-session_start();
-
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/undo.php';
+
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
 $database = database::getInstance()->get_connection();
 

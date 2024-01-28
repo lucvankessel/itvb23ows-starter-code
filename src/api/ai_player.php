@@ -1,12 +1,11 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/moves.php';
 
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
-
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/moves.php';
 
 $db = database::getInstance()->get_connection();
 

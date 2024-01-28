@@ -2,9 +2,12 @@
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
 
-function restart_game($database) {
-    session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
+function restart_game($database) {
     $_SESSION['board'] = [];
     $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
     $_SESSION['player'] = 0;

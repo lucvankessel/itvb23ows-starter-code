@@ -1,11 +1,11 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/move.php';
+
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
-
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/move.php';
 
 $board = $_SESSION['board'];
 

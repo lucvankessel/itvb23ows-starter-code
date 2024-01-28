@@ -1,11 +1,14 @@
 <?php
-
-session_start();
-
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/utils/util.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/game_rules/insect.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/play.php';
+
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
+
 
 $piece = $_POST['piece'];
 $to = $_POST['to'];
