@@ -1,6 +1,9 @@
 <?php
+namespace insects\grasshopper;
 
-class Grasshopper implements Insect {
+use \insects;
+
+class Grasshopper implements insects\Insect {
     public function moves(array $board, string $coordinate): array {
         $possible_moves = [];
 

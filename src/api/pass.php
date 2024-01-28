@@ -1,8 +1,11 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/pass.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/pass.php';
 
-$db = database::getInstance()->get_connection();
-if (pass_move($db)) {
+use game\pass;
+use db\connection;
+
+$db = connection\database::getInstance()->get_connection();
+if (pass\pass_move($db)) {
     header('Location: /');
     exit(0);
 } else {

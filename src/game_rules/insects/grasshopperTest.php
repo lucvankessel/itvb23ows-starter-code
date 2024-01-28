@@ -1,10 +1,11 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use insects\grasshopper;
 
 class GrasshopperTest extends TestCase {
 
     public function testGrasshopperMovesInStraightLine() {
-        $grasshopper = new Grasshopper();
+        $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
             "0,0" => [],
@@ -16,7 +17,7 @@ class GrasshopperTest extends TestCase {
     }
 
     public function testGrasshopperCantMoveToFieldItIsAlreadyOn() {
-        $grasshopper = new Grasshopper();
+        $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
             "0,0" => [],
@@ -28,7 +29,7 @@ class GrasshopperTest extends TestCase {
     }
 
     public function testGrasshopperMustJumpOverAtleastOneStone() {
-        $grasshopper = new Grasshopper();
+        $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
             "0,0" => []
@@ -39,7 +40,7 @@ class GrasshopperTest extends TestCase {
     }
 
     public function testGrasshopperCantJumpToOccupiedField() {
-        $grasshopper = new Grasshopper();
+        $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
             "0,0" => [],
@@ -51,7 +52,7 @@ class GrasshopperTest extends TestCase {
     }
 
     public function testGrasshopperMustJumpOverOccupiedLineOfTiles() {
-        $grasshopper = new Grasshopper();
+        $grasshopper = new grasshopper\Grasshopper();
 
         $board = [
             "0,0" => [],

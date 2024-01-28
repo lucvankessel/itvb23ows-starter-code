@@ -1,4 +1,5 @@
 <?php
+namespace db\connection;
 
 function get_state() {
     return serialize([$_SESSION['hand'], $_SESSION['board'], $_SESSION['player']]);
@@ -27,7 +28,7 @@ class database {
 
     public static function get_connection() {
         if(self::$db == null) {
-            self::$db = new PDO('mysql:host=127.0.0.1;dbname=hive', 'root', '');
+            self::$db = new \PDO('mysql:host=127.0.0.1;dbname=hive', 'root', '');
         }
         return self::$db;
     }

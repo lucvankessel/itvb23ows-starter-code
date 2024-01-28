@@ -3,6 +3,7 @@
 require_once("pass.php");
 
 use PHPUnit\Framework\TestCase;
+use game\pass;
 
 class PassTest extends TestCase {
 
@@ -18,7 +19,7 @@ class PassTest extends TestCase {
         $hand = [0 => [], 1=>[]];
         $player = 0;
         
-        $this->assertTrue(playerCanPass($board, $hand, $player));
+        $this->assertTrue(pass\playerCanPass($board, $hand, $player));
     }
 
     public function testPlayerCantPassAvailableMove() {
@@ -32,7 +33,7 @@ class PassTest extends TestCase {
         $hand = [0 => ["Q" => 0,"B" => 0, "S" => 0, "A" => 0, "G" => 0], 1 => ["Q" => 0, "B" => 0, "S" => 0, "A" => 0, "G" => 0]];
         $player = 0;
 
-        $this->assertFalse(playerCanPass($board, $hand, $player));
+        $this->assertFalse(pass\playerCanPass($board, $hand, $player));
     }
 
     public function testPlayerCantPassAvailablePlay() {
@@ -46,7 +47,7 @@ class PassTest extends TestCase {
         $hand = [0 => ["Q" => 0,"B" => 0, "S" => 1, "A" => 0, "G" => 0], 1 => ["Q" => 0, "B" => 0, "S" => 0, "A" => 0, "G" => 0]];
         $player = 0;
 
-        $this->assertFalse(playerCanPass($board, $hand, $player));
+        $this->assertFalse(pass\playerCanPass($board, $hand, $player));
     }
 
 }

@@ -1,9 +1,10 @@
 <?php
+namespace db\games;
 
 function start_game($db) {
     $stmt = $db->prepare('INSERT INTO games VALUES ()');
     $stmt->execute();
-    $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchall(\PDO::FETCH_ASSOC);
 
     return $result;
 }

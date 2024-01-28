@@ -2,15 +2,18 @@
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 
-    if(!isset($_SESSION)) 
-    { 
+    if (!isset($_SESSION)) {
         session_start(); 
-    } 
+    }
 
-    include_once 'src/utils/util.php';
-    include_once 'src/db/database.php';
-    include_once 'src/game_rules/insect.php';
-    include_once 'src/game/play.php';
+    require_once 'src/utils/util.php';
+    require_once 'src/db/database.php';
+    require_once 'src/game_rules/insect.php';
+    require_once 'src/game/play.php';
+
+    use db\connection;
+    use \insects;
+    use game\play;
 
     if (!isset($_SESSION['board'])) {
         header('Location: src/api/restart.php');
@@ -21,10 +24,10 @@
     $player = $_SESSION['player'];
     $hand = $_SESSION['hand'];
 
-    $to = find_contour($board);
+    $to = insects\find_contour($board);
     if (!count($to)) $to[] = '0,0';
 
-    $win_var = is_win($board);
+    $win_var = insects\is_win($board);
 ?>
 <!DOCTYPE html>
 <html>
@@ -146,7 +149,7 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
-                        if(isValidPlayTile($board, $hand[$player], $player, $pos)) {
+                        if(play\isValidPlayTile($board, $hand[$player], $player, $pos)) {
                             echo "<option value=\"$pos\">$pos</option>";
                         }
                     }
@@ -185,7 +188,7 @@
         
         <ol>
             <?php
-                $db = database::getInstance()->get_connection();
+                $db = connection\database::getInstance()->get_connection();
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ?');
                 $stmt->execute([$_SESSION['game_id']]);
                 $result = $stmt->fetchall(PDO::FETCH_ASSOC);

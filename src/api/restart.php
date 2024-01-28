@@ -1,15 +1,18 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
+
+use db\connection;
+use game\restart;
 
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
 
-$db = database::getInstance()->get_connection();
+$db = connection\database::getInstance()->get_connection();
 
-if (restart_game($db)) {
+if (restart\restart_game($db)) {
     header('Location: /');
     exit(0);
 } else {

@@ -1,11 +1,12 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use insects\spider;
 
 class SpiderTest extends TestCase {
 
     public function testSpiderMoves3Tiles() {
-        $spider = new Spider();
+        $spider = new spider\Spider();
         $board = [
             "0,0" => [],
             "0,1" => [],
@@ -20,7 +21,7 @@ class SpiderTest extends TestCase {
     }
 
     public function testSpiderSlides() {
-        $spider = new Spider();
+        $spider = new spider\Spider();
 
         $boardFalse = [
             "0,0" => [],
@@ -45,7 +46,7 @@ class SpiderTest extends TestCase {
     }
 
     public function testSpiderMoveToOwnPosition() {
-        $spider = new Spider();
+        $spider = new spider\Spider();
 
         $board = [
             "0,0" => [],
@@ -61,7 +62,7 @@ class SpiderTest extends TestCase {
     }
 
     public function testSpiderMoveToEmptyField() {
-        $spider = new Spider();
+        $spider = new spider\Spider();
 
         $board = [
             "0,0" => [],

@@ -1,8 +1,11 @@
 <?php
+namespace insects\spider;
 
-class Spider implements Insect {
+use \insects;
+
+class Spider implements insects\Insect {
     public function moves(array $board, string $coordinate): array {
-        return trace_contour($board, $coordinate, 3);
+        return insects\trace_contour($board, $coordinate, 3);
     }
 
     public function validMove(array $board, $from, $to): bool {

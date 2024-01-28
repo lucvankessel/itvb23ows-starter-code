@@ -1,6 +1,5 @@
 <?php
-
-include_once __DIR__ . '/../game_rules/insect.php';
+namespace util;
 
 $GLOBALS['OFFSETS'] = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
 

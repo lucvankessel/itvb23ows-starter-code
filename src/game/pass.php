@@ -1,7 +1,14 @@
 <?php
-include_once dirname(__FILE__).'/play.php';
-include_once dirname(__FILE__) .'/move.php';
-include_once dirname(__FILE__).'/../utils/util.php';
+namespace game\pass;
+
+require_once dirname(__FILE__).'/play.php';
+require_once dirname(__FILE__) .'/move.php';
+require_once dirname(__FILE__).'/../utils/util.php';
+
+use db\connection;
+use game\move;
+use game\play;
+use \insects;
 
 if(!isset($_SESSION)) 
 { 
@@ -18,7 +25,7 @@ function pass_move($database) {
     }
     
     $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "pass", null, null, ?, ?)');
-    $stmt->execute([$_SESSION['game_id'], $_SESSION['last_move'], get_state()]);
+    $stmt->execute([$_SESSION['game_id'], $_SESSION['last_move'], connection\get_state()]);
     $_SESSION['last_move'] = $database->lastInsertId();
     $_SESSION['player'] = 1 - $_SESSION['player'];
 
@@ -26,7 +33,7 @@ function pass_move($database) {
 }
 
 function playerCanPass($board, $hand, $player):bool {
-    $to = find_contour($board);
+    $to = insects\find_contour($board);
 
     // check if there is something on the board.
     if (!count($to)) {
@@ -39,7 +46,7 @@ function playerCanPass($board, $hand, $player):bool {
             continue;
         }
         foreach($to as $pos) {
-            if(isValidPlay($board, $hand, $player, $tile, $pos)) {
+            if(play\isValidPlay($board, $hand, $player, $tile, $pos)) {
                 return false;
             }
         }
@@ -48,9 +55,9 @@ function playerCanPass($board, $hand, $player):bool {
     // check if the player cant move any pieces they have on the board.
     foreach($board as $coord => $tile) {
         if($tile[0][0] == $player) {
-            $moves = get_moves($board, $coord);
+            $moves = insects\get_moves($board, $coord);
             foreach($moves as $move) {
-                if(isValidMove($board, $hand[$player], $player, $coord, $move)) {
+                if(move\isValidMove($board, $hand[$player], $player, $coord, $move)) {
                     return false;
                 }
             }

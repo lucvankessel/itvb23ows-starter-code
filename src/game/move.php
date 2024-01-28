@@ -1,7 +1,12 @@
 <?php
-include_once dirname(__FILE__) .'/../utils/util.php';
-include_once dirname(__FILE__) .'/../db/database.php';
-include_once dirname(__FILE__) .'/../game_rules/insect.php';
+namespace game\move;
+
+require_once dirname(__FILE__) .'/../utils/util.php';
+require_once dirname(__FILE__) .'/../db/database.php';
+require_once dirname(__FILE__) .'/../game_rules/insect.php';
+
+use util;
+use db\connection;
 
 if(!isset($_SESSION)) 
 { 
@@ -22,7 +27,7 @@ function move_piece($database, $from, $to) {
         else $board[$to] = [$tile];
         $_SESSION['player'] = 1 - $_SESSION['player'];
         $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
-        $stmt->execute(array($_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state()));
+        $stmt->execute(array($_SESSION['game_id'], $from, $to, $_SESSION['last_move'], connection\get_state()));
         $_SESSION['last_move'] = $database->lastInsertId();
         unset($board[$from]);
     }
@@ -42,7 +47,7 @@ function isValidMove($board, $hand, $player, $from, $to): bool {
         $_SESSION['error'] = "Queen bee is not played";
     else {
         $tile = array_pop($board[$from]);
-        if (!hasNeighBour($to, $board))
+        if (!util\hasNeighBour($to, $board))
             $_SESSION['error'] = "Move would split hive";
         else {
             $all = array_keys($board);
@@ -65,7 +70,7 @@ function isValidMove($board, $hand, $player, $from, $to): bool {
                 if ($from == $to) $_SESSION['error'] = 'Tile must move';
                 elseif (isset($board[$to]) && $tile[1] != "B") $_SESSION['error'] = 'Tile not empty';
                 elseif ($tile[1] == "Q" || $tile[1] == "B") {
-                    if (!slide($board, $from, $to))
+                    if (!util\slide($board, $from, $to))
                         $_SESSION['error'] = 'Tile must slide';
                 }
             }

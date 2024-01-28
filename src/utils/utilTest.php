@@ -1,8 +1,14 @@
 <?php
+require_once "util.php";
+require_once __DIR__ .'/../game_rules/insect.php';
 
 use PHPUnit\Framework\TestCase;
-include_once "util.php";
-include_once __DIR__ .'/../game_rules/insect.php';
+use function util\hasNeighBour;
+use function util\isNeighbour;
+use function util\len;
+use function util\neighboursAreSameColor;
+use function util\slide;
+use function insects\is_win;
 
 class utilTest extends TestCase {
 

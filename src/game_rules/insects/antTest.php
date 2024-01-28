@@ -1,11 +1,12 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use insects\ant;
 
 class AntTest extends TestCase {
 
     public function testAntMovesWithoutStepLimit() {
-        $ant = new Ant();
+        $ant = new ant\Ant();
 
         $board = [
             "0,0" => [],
@@ -21,7 +22,7 @@ class AntTest extends TestCase {
     }
 
     public function testAntSlide() {
-        $ant = new Ant();
+        $ant = new ant\Ant();
 
         $board = [
             "0,0" => [],
@@ -38,7 +39,7 @@ class AntTest extends TestCase {
     }
 
     public function testAntCantMoveToSamePlace() {
-        $ant = new Ant();
+        $ant = new ant\Ant();
 
         $board = [
             "0,0" => [],
@@ -54,7 +55,7 @@ class AntTest extends TestCase {
     }
 
     public function testAntMoveOnEmptyFields() {
-        $ant = new Ant();
+        $ant = new ant\Ant();
 
         $board = [
             "0,0" => [],

@@ -1,15 +1,18 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/undo.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/undo.php';
+
+use db\connection;
+use game\undo;
 
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
 
-$database = database::getInstance()->get_connection();
+$database = connection\database::getInstance()->get_connection();
 
-if (undo_move($database)) {
+if (undo\undo_move($database)) {
     header('Location: /');
     exit(0);
 } else {

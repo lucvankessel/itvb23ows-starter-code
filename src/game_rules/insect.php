@@ -1,12 +1,22 @@
 <?php
+namespace insects;
 
 require_once dirname(__FILE__) . "/../utils/util.php";
 require_once dirname(__FILE__) . "/../game/move.php";
-include_once 'insects/ant.php';
-include_once 'insects/beetle.php';
-include_once 'insects/grasshopper.php';
-include_once 'insects/queen.php';
-include_once 'insects/spider.php';
+require_once 'insects/ant.php';
+require_once 'insects/beetle.php';
+require_once 'insects/grasshopper.php';
+require_once 'insects/queen.php';
+require_once 'insects/spider.php';
+
+namespace insects;
+
+use \util;
+use insects\ant;
+use insects\beetle;
+use insects\grasshopper;
+use insects\queen;
+use insects\spider;
 
 interface Insect
 {
@@ -38,7 +48,7 @@ function find_contour($board, $exclude = []):array {
             
             if (!in_array($pos, $exclude)) {
                 $pq2 = explode(',', $pos);
-                if (hasNeighBour($pos, $board)) {
+                if (util\hasNeighBour($pos, $board)) {
                     $new_pos = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
                     if( isset($board[$new_pos]) ) {
                         continue;
@@ -67,7 +77,7 @@ function trace_contour($state, $coordinate, $steps = 1) {
                 in_array($neighbour, $contour) && 
                 !in_array($neighbour, $visited) && 
                 !array_key_exists($neighbour, $state) && 
-                slide($state, $c, $neighbour)) {
+                util\slide($state, $c, $neighbour)) {
                 $visited[] = $neighbour;
                 
                 if ($steps == -1) {
@@ -94,11 +104,11 @@ function trace_contour($state, $coordinate, $steps = 1) {
 
 function get_moves($board, $coordinates): array {
     $insect_classes = [];
-    $insect_classes['Q'] = new Queen;
-    $insect_classes['B'] = new Beetle;
-    $insect_classes['S'] = new Spider;
-    $insect_classes['A'] = new Ant;
-    $insect_classes['G'] = new Grasshopper;
+    $insect_classes['Q'] = new queen\Queen;
+    $insect_classes['B'] = new beetle\Beetle;
+    $insect_classes['S'] = new spider\Spider;
+    $insect_classes['A'] = new ant\Ant;
+    $insect_classes['G'] = new grasshopper\Grasshopper;
 
     $moves = [];
 

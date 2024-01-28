@@ -1,13 +1,16 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/moves.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/moves.php';
+
+use db\connection;
+use db\moves;
 
 if(!isset($_SESSION)) 
 { 
     session_start(); 
 } 
 
-$db = database::getInstance()->get_connection();
+$db = connection\database::getInstance()->get_connection();
 
 $move_number;
 try {
@@ -37,11 +40,11 @@ $ai_move = json_decode(httpPost($url, $data), true);
 // This ai move we can put directly into the database.
 // maybe make of the database insert a generic function.
 
-$state = get_state();
+$state = connection\get_state();
 $move_options = [$_SESSION['game_id'], $ai_move[0], $ai_move[1], $ai_move[2], $_SESSION['last_move']??null, $state];
 
-$db = database::getInstance()->get_connection();
-$insert_result = insert_move($db, $move_options);
+$db = connection\database::getInstance()->get_connection();
+$insert_result = moves\insert_move($db, $move_options);
 
 // update board, update hand.
 switch ($ai_move[0]) {

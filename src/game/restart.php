@@ -1,6 +1,5 @@
 <?php
-
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+namespace game\restart;
 
 if(!isset($_SESSION)) 
 { 

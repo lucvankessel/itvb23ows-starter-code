@@ -1,9 +1,12 @@
 <?php
+namespace insects\beetle;
 
-class Beetle implements Insect {
+use \insects;
+
+class Beetle implements insects\Insect {
     public function moves(array $board, string $coordinate): array {
         // TODO: support stacking tiles.
-        return trace_contour($board, $coordinate, 1);
+        return insects\trace_contour($board, $coordinate, 1);
     }
 
     public function validMove(array $board, $from, $to):bool {

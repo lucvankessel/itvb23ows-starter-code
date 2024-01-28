@@ -1,7 +1,11 @@
 <?php
+namespace game\undo;
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
+
+use db\connection;
+use game\restart;
 
 if(!isset($_SESSION)) 
 { 
@@ -11,10 +15,10 @@ if(!isset($_SESSION))
 function undo_move($database) {
     $stmt = $database->prepare('SELECT * FROM moves WHERE id = ?');
     $stmt->execute([$_SESSION['last_move']]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
     if($result['previous_id'] == 0) {
-        restart_game($database);
+        restart\restart_game($database);
         return true;
     }
 
@@ -23,10 +27,10 @@ function undo_move($database) {
 
     $stmt2 = $database->prepare('SELECT * FROM moves WHERE id=?');
     $stmt2->execute([$result['previous_id']]);
-    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $result2 = $stmt2->fetch(\PDO::FETCH_ASSOC);
 
     $_SESSION['last_move'] = $result2['id'];
-    set_state($result2['state']);
+    connection\set_state($result2['state']);
 
     return true;
 }

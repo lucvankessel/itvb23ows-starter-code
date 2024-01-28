@@ -1,7 +1,12 @@
 <?php
-include_once dirname(__FILE__).'/../utils/util.php';
-include_once dirname(__FILE__).'/../db/database.php';
-include_once dirname(__FILE__).'/../game_rules/insect.php';
+namespace game\play;
+
+require_once dirname(__FILE__).'/../utils/util.php';
+require_once dirname(__FILE__).'/../db/database.php';
+require_once dirname(__FILE__).'/../game_rules/insect.php';
+
+use util;
+use db\connection;
 
 if(!isset($_SESSION)) 
 { 
@@ -18,14 +23,14 @@ function play_move($database, $piece, $to) {
         $_SESSION['hand'][$player][$piece]--;
         $_SESSION['player'] = 1 - $_SESSION['player'];
 
-        $state = get_state();
+        $state = connection\get_state();
         try
         {    
             $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
             $stmt->execute([$_SESSION['game_id'], $piece, $to, $_SESSION['last_move'] ?? null, $state]);
             $_SESSION['last_move'] = $database->lastInsertId();
         }
-        catch (PDOException $e)
+        catch (\PDOException $e)
         {
             $_SESSION['error'] = 'Some error from PDO';
         }
@@ -44,10 +49,10 @@ function isValidPlay($board, $hand, $player, $piece, $to): bool {
     }elseif (isset($board[$to])){
         $_SESSION['error'] = 'Board position is not empty';
         return false;
-    }elseif (count($board) && !hasNeighBour($to, $board)) {
+    }elseif (count($board) && !util\hasNeighBour($to, $board)) {
         $_SESSION['error'] = "board position has no neighbour";
         return false;
-    }elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+    }elseif (array_sum($hand) < 11 && !util\neighboursAreSameColor($player, $to, $board)) {
         $_SESSION['error'] = "Board position has opposing neighbour";
         return false;
     }elseif (array_sum($hand) <= 8 && $hand['Q'] && $piece != 'Q') {
@@ -61,9 +66,9 @@ function isValidPlay($board, $hand, $player, $piece, $to): bool {
 function isValidPlayTile($board, $hand, $player, $to){
     if (isset($board[$to])){
         return false;
-    }elseif (count($board) && !hasNeighBour($to, $board)) {
+    }elseif (count($board) && !util\hasNeighBour($to, $board)) {
         return false;
-    }elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+    }elseif (array_sum($hand) < 11 && !util\neighboursAreSameColor($player, $to, $board)) {
         return false;
     }
 
