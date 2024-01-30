@@ -12,13 +12,13 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-function movePiece($database, $from, $to)
+function movePiece(connection\DB $database, $from, $to)
 {
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];
     $hand = $_SESSION['hand'][$player];
     unset($_SESSION['error']);
-    
+
     if (!isValidMove($board, $hand, $player, $from, $to)) {
         return false;
     } else {

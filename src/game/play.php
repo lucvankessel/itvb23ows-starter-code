@@ -12,7 +12,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-function playMove($database, $piece, $to)
+function playMove(connection\DB $database, $piece, $to)
 {
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];

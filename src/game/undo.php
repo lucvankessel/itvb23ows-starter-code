@@ -6,31 +6,25 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
 
 use db\connection;
 use game\restart;
+use Exception;
 
 if (!isset($_SESSION)) {
     session_start();
 }
 
-function undoMove($database)
+function undoMove(connection\DB $database)
 {
     $result = $database->getMove($_SESSION['last_move']);
-    // $stmt = $database->prepare('SELECT * FROM moves WHERE id = ?');
-    // $stmt->execute([$_SESSION['last_move']]);
-    // $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
     if ($result['previous_id'] == 0) {
         restart\restartGame($database);
         return true;
     }
 
-    $delResult = $database->deleteMove($result['previous_id']);
-    // $delStmt = $database->prepare("DELETE FROM moves WHERE id=?");
-    // $delStmt->execute([$result['id']]);
+    $delStmt = $database->getConnection()->prepare("DELETE FROM moves WHERE id=?");
+    $delStmt->execute([$result['id']]);
 
     $result2 = $database->getMove($result['previous_id']);
-    // $stmt2 = $database->prepare('SELECT * FROM moves WHERE id=?');
-    // $stmt2->execute([$result['previous_id']]);
-    // $result2 = $stmt2->fetch(\PDO::FETCH_ASSOC);
 
     $_SESSION['last_move'] = $result2['id'];
     connection\setState($result2['state']);

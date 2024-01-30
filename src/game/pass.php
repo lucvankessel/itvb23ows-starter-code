@@ -14,7 +14,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-function passMove($database)
+function passMove(connection\DB $database)
 {
     $player = $_SESSION['player'];
     $board = $_SESSION['board'];

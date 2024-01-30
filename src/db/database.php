@@ -20,8 +20,8 @@ interface DB
     public static function getConnection();
     public function insertMove(array $options);
     public function startGame();
-    public function getMove();
-    public function deleteMove();
+    public function getMove(int $id);
+    public function deleteMove(int $id);
 }
 
 class Database implements DB
