@@ -11,7 +11,7 @@ if (!isset($_SESSION)) {
 
 $from = $_POST['from'];
 $to = $_POST['to'];
-$db = connection\Database::getInstance()->getConnection();
+$db = connection\Database::getInstance();
 
 // errors are set in the function right now, maybe move these to exceptions.
 move\movePiece($db, $from, $to);

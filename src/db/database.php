@@ -14,7 +14,17 @@ function setState($state)
     $_SESSION['player'] = $c;
 }
 
-class Database
+interface DB
+{
+    public static function getInstance();
+    public static function getConnection();
+    public function insertMove(array $options);
+    public function startGame();
+    public function getMove();
+    public function deleteMove();
+}
+
+class Database implements DB
 {
     private static $instance = null;
     private static $db = null;
@@ -34,5 +44,36 @@ class Database
             self::$db = new \PDO('mysql:host=127.0.0.1;dbname=hive', 'root', '');
         }
         return self::$db;
+    }
+
+    function insertMove(array $options)
+    {
+        if (count($options) != 6) {
+            throw new \Exception("Not enough arugments to add a valid move");
+        }
+    
+        $stmt = self::getConnection()->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, ?, ?, ?, ?, ?)');
+        $stmt->execute($options);
+    
+        return $stmt->fetchall(\PDO::FETCH_ASSOC);
+    }
+
+    function startGame()
+    {
+        $stmt = self::getConnection()->prepare("INSERT INTO games VALUES ()")->execute();
+        return $stmt;
+    }
+
+    function getMove(int $id) {
+        $stmt = self::getConnection()->prepare("SELECT * FROM moves WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    function deleteMove(int $id)
+    {
+        $stmt = self::getConnection()->prepare("DELETE FROM moves WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 }

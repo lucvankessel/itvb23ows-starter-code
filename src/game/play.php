@@ -25,11 +25,12 @@ function playMove($database, $piece, $to)
 
         $state = connection\getState();
         try {
-            $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
-            $stmt->execute([$_SESSION['game_id'], $piece, $to, $_SESSION['last_move'] ?? null, $state]);
-            $_SESSION['last_move'] = $database->lastInsertId();
+            // $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
+            $database->insertMove([$_SESSION['game_id'], "play", $piece, $to, $_SESSION['last_move'] ?? null, $state]);
+            $_SESSION['last_move'] = $database->getConnection()->lastInsertId();
         } catch (\PDOException $e) {
-            $_SESSION['error'] = 'Some error from PDO';
+            $_SESSION['error'] = $e;
+            // $_SESSION['error'] = 'Some error from PDO';
         }
         return true;
     } else {

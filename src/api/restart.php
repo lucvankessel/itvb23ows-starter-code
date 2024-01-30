@@ -9,7 +9,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-$db = connection\Database::getInstance()->getConnection();
+$db = connection\Database::getInstance();
 
 if (restart\restartGame($db)) {
     header('Location: /');

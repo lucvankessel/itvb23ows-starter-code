@@ -1,2 +1,2 @@
 <?php
-// mock with database.
+// undo functie werkt niet volledig

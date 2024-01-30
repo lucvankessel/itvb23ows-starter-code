@@ -13,7 +13,7 @@ if (!isset($_SESSION)) {
 
 $piece = $_POST['piece'];
 $to = $_POST['to'];
-$db = connection\Database::getInstance()->getConnection();
+$db = connection\Database::getInstance();
 
 // right now the playMove sets the errors so we can just redirect to index.php
 play\playMove($db, $piece, $to);

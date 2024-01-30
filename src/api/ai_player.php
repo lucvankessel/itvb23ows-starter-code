@@ -42,7 +42,7 @@ $ai_move = json_decode(httpPost($url, $data), true);
 $state = connection\getState();
 $move_options = [$_SESSION['game_id'], $ai_move[0], $ai_move[1], $ai_move[2], $_SESSION['last_move']??null, $state];
 
-$db = connection\Database::getInstance()->getConnection();
+$db = connection\Database::getInstance();
 $insert_result = moves\insertMove($db, $move_options);
 
 // update board, update hand.

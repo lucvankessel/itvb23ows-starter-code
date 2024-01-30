@@ -9,7 +9,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-$database = connection\Database::getInstance()->getConnection();
+$database = connection\Database::getInstance();
 
 if (undo\undoMove($database)) {
     header('Location: /');
