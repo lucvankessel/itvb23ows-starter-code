@@ -16,10 +16,8 @@ function restartGame(connection\DB $database)
     $_SESSION['player'] = 0;
     $_SESSION['last_move'] = 0;
 
-    // $database->prepare('INSERT INTO games VALUES ()')->execute();
     $startGameResult = $database->startGame();
-    $data = $database->getConnection()->lastInsertId();
-    $_SESSION['game_id'] = $data;
+    $_SESSION['game_id'] = $database->getLastInsert();
 
     return true;
 }

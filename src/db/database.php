@@ -18,10 +18,11 @@ interface DB
 {
     public static function getInstance();
     public static function getConnection();
-    public function insertMove(array $options);
-    public function startGame();
-    public function getMove(int $id);
-    public function deleteMove(int $id);
+    public function insertMove(array $options): array;
+    public function startGame(): bool;
+    public function getMove(int $id): array;
+    public function deleteMove(int $id): array;
+    public function getLastInsert(): int;
 }
 
 class Database implements DB
@@ -46,7 +47,7 @@ class Database implements DB
         return self::$db;
     }
 
-    function insertMove(array $options)
+    function insertMove(array $options): array
     {
         if (count($options) != 6) {
             throw new \Exception("Not enough arugments to add a valid move");
@@ -58,22 +59,28 @@ class Database implements DB
         return $stmt->fetchall(\PDO::FETCH_ASSOC);
     }
 
-    function startGame()
+    function startGame(): bool
     {
         $stmt = self::getConnection()->prepare("INSERT INTO games VALUES ()")->execute();
         return $stmt;
     }
 
-    function getMove(int $id) {
+    function getMove(int $id): array
+    {
         $stmt = self::getConnection()->prepare("SELECT * FROM moves WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    function deleteMove(int $id)
+    function deleteMove(int $id): array
     {
         $stmt = self::getConnection()->prepare("DELETE FROM moves WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    function getLastInsert(): int
+    {
+        return self::getConnection()->lastInsertId();
     }
 }

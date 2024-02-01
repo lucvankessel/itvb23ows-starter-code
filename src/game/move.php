@@ -29,9 +29,8 @@ function movePiece(connection\DB $database, $from, $to)
             $board[$to] = [$tile];
         }
         $_SESSION['player'] = 1 - $_SESSION['player'];
-        // $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
         $database->insertMove(array($_SESSION['game_id'], "move", $from, $to, $_SESSION['last_move'], connection\getState()));
-        $_SESSION['last_move'] = $database->getConnection()->lastInsertId();
+        $_SESSION['last_move'] = $database->getLastInsert();
         unset($board[$from]);
     }
     $_SESSION['board'] = $board;

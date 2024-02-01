@@ -1,8 +1,8 @@
 <?php
 namespace game\undo;
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/src/game/restart.php';
+require_once dirname(__FILE__).'/../db/database.php';
+require_once dirname(__FILE__).'/restart.php';
 
 use db\connection;
 use game\restart;
@@ -21,8 +21,7 @@ function undoMove(connection\DB $database)
         return true;
     }
 
-    $delStmt = $database->getConnection()->prepare("DELETE FROM moves WHERE id=?");
-    $delStmt->execute([$result['id']]);
+    $database->deleteMove($result['id']);
 
     $result2 = $database->getMove($result['previous_id']);
 
