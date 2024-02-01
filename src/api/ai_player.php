@@ -1,6 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/database.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/src/db/moves.php';
 
 use db\connection;
 use db\moves;

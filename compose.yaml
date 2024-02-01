@@ -1,6 +1,8 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:80"
     # disable this volume to build the image with all the code in it.
@@ -19,3 +21,12 @@ services:
       - '3306'
     volumes:
       - "./data:/var/lib/mysql"
+    
+  ai:
+    build:
+      context: .
+      dockerfile: Dockerfile.AI
+    ports:
+      - "5000:5000"
+    volumes:
+      - "./ai/:/app/"
