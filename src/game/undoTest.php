@@ -13,7 +13,8 @@ use game\undo;
 
 class UndoTest extends TestCase
 {
-    public function testUndoFunction() {
+    public function testUndoFunction()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }

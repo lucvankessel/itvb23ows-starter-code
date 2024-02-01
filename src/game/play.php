@@ -25,7 +25,7 @@ function playMove(connection\DB $database, $piece, $to)
 
         $state = connection\getState();
         try {
-            $result = $database->insertMove([$_SESSION['game_id'], "play", $piece, $to, $_SESSION['last_move'] ?? null, $state]);
+            $database->insertMove([$_SESSION['game_id'], "play", $piece, $to, $_SESSION['last_move'] ?? null, $state]);
             $_SESSION['last_move'] = $database->getLastInsert();
         } catch (\PDOException $e) {
             $_SESSION['error'] = $e;

@@ -61,8 +61,7 @@ class Database implements DB
 
     function startGame(): bool
     {
-        $stmt = self::getConnection()->prepare("INSERT INTO games VALUES ()")->execute();
-        return $stmt;
+        return self::getConnection()->prepare("INSERT INTO games VALUES ()")->execute();
     }
 
     function getMove(int $id): array

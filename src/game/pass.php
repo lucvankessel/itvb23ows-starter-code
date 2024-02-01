@@ -23,8 +23,7 @@ function passMove(connection\DB $database)
         $_SESSION['ERROR'] = "player has a valid move it can play, no pass allowed!";
         return false;
     }
-    
-    // $stmt = $database->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "pass", null, null, ?, ?)');
+
     $database->insertMove([$_SESSION['game_id'], "pass", null, null, $_SESSION['last_move'], connection\getState()]);
     $_SESSION['last_move'] = $database->getConnection()->lastInsertId();
     $_SESSION['player'] = 1 - $_SESSION['player'];

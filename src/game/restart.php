@@ -16,7 +16,7 @@ function restartGame(connection\DB $database)
     $_SESSION['player'] = 0;
     $_SESSION['last_move'] = 0;
 
-    $startGameResult = $database->startGame();
+    $database->startGame();
     $_SESSION['game_id'] = $database->getLastInsert();
 
     return true;
