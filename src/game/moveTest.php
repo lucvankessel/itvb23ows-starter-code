@@ -66,4 +66,17 @@ class MoveTest extends TestCase
         $this->assertTrue($three);
     }
 
+    public function testQueenInvalidMoveBug()
+    {
+        $board = [
+            "0,0" => [[0, "Q"]],
+            "1,0" => [[1, "Q"]],
+        ];
+
+        $hand = ["Q" => 0, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
+
+        $result = move\isValidMove($board, $hand, 0, "0,0", "0,1");
+        $this->assertTrue($result);
+    }
+
 }
